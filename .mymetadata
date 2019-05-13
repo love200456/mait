@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="MaitreyaRim"
+  id="myeclipse.1494835595196"
+  context-root="/MaitreyaRim"
+  j2ee-spec="6.0"
+  archive="MaitreyaRim.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

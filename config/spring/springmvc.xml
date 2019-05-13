@@ -1,0 +1,102 @@
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:task="http://www.springframework.org/schema/task"  
+    xsi:schemaLocation="    
+    http://www.springframework.org/schema/beans     
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd    
+    http://www.springframework.org/schema/context    
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd    
+    http://www.springframework.org/schema/mvc    
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd    
+    http://www.springframework.org/schema/task     
+    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+	<!-- 使用spring组件扫描 -->
+	<!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
+	<context:component-scan base-package="com.wingfac.MaitreyaRim.controller, com.wingfac.MaitreyaRim.service.impl" />
+
+	<!-- 通过annotation-driven可以替代下边的处理器映射器和适配器 -->
+	<mvc:annotation-driven conversion-service="conversionService" />
+	<mvc:default-servlet-handler /> 
+
+
+	<!-- 配置视图解析器 要求将jstl的包加到classpath -->
+	<!-- ViewResolver -->
+	<!-- 定义跳转的文件的前后缀 ，视图模式配置--> 
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+
+	<!-- 自定义webBinder -->
+	<bean id="customBinder"
+		class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+		<!-- <property name="conversionService" ref="conversionService" /> -->
+
+		<!-- propertyEditorRegistrars用于属性编辑器 -->
+		<!-- <property name="propertyEditorRegistrars"> <list> <ref bean="customPropertyEditor" 
+			/> </list> </property> -->
+	</bean>
+
+	<!-- 转换器 -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	</bean>
+
+	<context:annotation-config />
+	<!-- 配置文件上传 --> 
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 默认编码 -->
+		<property name="defaultEncoding" value="UTF-8" />
+		<!-- 文件大小最大值 -->
+		<property name="maxUploadSize" value="51200000" />
+		<!-- 启用是为了推迟文件解析，以便捕获文件大小异常 -->
+		<property name="resolveLazily" value="true" />
+	</bean>
+	<!--避免IE执行AJAX时，返回JSON出现下载文件 -->
+	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=UTF-8</value>
+				<value>text/html;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="stringHttpMessageConverter"
+		class="org.springframework.http.converter.StringHttpMessageConverter" />
+
+<!-- 	 定时器配置 
+	<bean id="userService" class="com.wingfac.transuport.service.impl.UserService"></bean>
+     1.指定任务详细信息
+    <bean id="complainJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    	设置执行对象
+    	<property name="targetObject" ref="userService"></property>
+    	设置对象中对应的执行方法
+    	<property name="targetMethod" value="updateAutoDeal"></property>
+    	是否可以同步执行，不可同步执行
+    	<property name="concurrent" value="false"></property>
+    </bean> -->
+    
+    <!-- 2.指定任务执行时机（任务执行触发器） -->
+<!--      <bean id="complainCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	设置任务详细信息
+    	<property name="jobDetail" ref="complainJobDetail"></property>
+    	设置任务执行时间点  在每月的月底下午的3点没分中的第10秒执行任务
+    	<property name="cronExpression" value="0 30 0 ? * *"></property>
+    </bean> -->
+    
+    <!-- 3.设置调度工厂 -->
+<!--     <bean id="complainScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    	<property name="triggers">
+    		<list>
+    			<ref bean="complainCronTrigger" />
+    		</list>
+    	</property>
+    </bean> -->
+
+
+</beans>

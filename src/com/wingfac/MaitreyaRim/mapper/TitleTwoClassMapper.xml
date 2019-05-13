@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.TitleTwoClassMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.TitleTwoClass"
+		id="titleTwoClassMapper">
+		<id column="ttc_id" property="ttc_id" jdbcType="INTEGER" />
+		<result property="toc_id" column="toc_id" jdbcType="INTEGER" />
+		<result property="ttc_name" column="ttc_name" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`ttc_id`, `toc_id`, `ttc_name`
+	</sql>
+
+	<select id="selectTwo" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.TitleTwoClass">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM TitleTwoClass WHERE TitleTwoClass.`toc_id`=#{toc_id} ORDER BY
+		ttc_id ASC
+	</select>
+
+	<select id="selectTwoAll" resultType="com.wingfac.MaitreyaRim.po.TitleTwoClass">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM TitleTwoClass ORDER BY ttc_id ASC
+	</select>
+
+</mapper>

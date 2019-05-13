@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.RegisterMapper">
+
+	<insert id="insertAverUser" parameterType="com.wingfac.MaitreyaRim.po.AverageUser">
+		INSERT INTO
+		AverageUser(auMobile,auPassword,auAvatar,auBuyerNick,auIdentity,limit_integral,permanent_points,auAddress,remarks,integral_remark)
+		VALUES
+		(#{auMobile,jdbcType=VARCHAR},#{auPassword,jdbcType=VARCHAR},#{auAvatar,jdbcType=VARCHAR},#{auBuyerNick,jdbcType=VARCHAR},#{auIdentity,jdbcType=VARCHAR},#{limit_integral},#{permanent_points},#{auAddress,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR},#{integral_remark,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="selectByMobile" parameterType="java.lang.String"
+		resultType="com.wingfac.MaitreyaRim.po.AverageUser">
+		SELECT auId as auId,auMobile as auMobile,auPassword as
+		auPassword,auAvatar as auAvatar,auBuyerNick as auBuyerNick,auIdentity
+		as auIdentity,limit_integral as limit_integral,permanent_points as
+		permanent_points,auAddress as
+		auAddress FROM
+		AVERAGEUSER
+		WHERE
+		averageuser.`auMobile`=#{auMobile}
+	</select>
+
+	<update id="updateauAvatar" parameterType="map">
+		UPDATE AVERAGEUSER SET
+		averageuser.`auAvatar`=#{auAvatar} WHERE averageuser.`auId`=#{auId}
+	</update>
+
+	<select id="selectByauId" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.AverageUserVo">
+		SELECT * FROM AVERAGEUSER WHERE averageuser.`auId`=#{auId}
+	</select>
+
+	<update id="updateauPasswordByauMoblie" parameterType="map">
+		UPDATE
+		AVERAGEUSER SET
+		averageuser.`auPassword`=#{auPassword} WHERE
+		averageuser.`auMobile`=#{auMobile}
+	</update>
+
+	<update id="updateauPasswordByauId" parameterType="map">
+		UPDATE
+		AVERAGEUSER SET
+		averageuser.`auPassword`=#{auPassword} WHERE
+		averageuser.`auId`=#{auId}
+	</update>
+
+	<update id="updateauAddress" parameterType="map">
+		UPDATE
+		AVERAGEUSER SET
+		averageuser.`auAddress`=#{auAddress} WHERE
+		averageuser.`auId`=#{auId}
+	</update>
+
+	<update id="updateauNick" parameterType="map">
+		UPDATE AVERAGEUSER
+		SET
+		averageuser.`auBuyerNick`=#{auBuyerNick}
+		WHERE
+		averageuser.`auId`=#{auId}
+	</update>
+
+</mapper>

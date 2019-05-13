@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.PayMapper">
+	
+	<select id="getUserById" parameterType="String" resultType="Map">
+		SELECT * FROM averageuser WHERE averageuser.`auId` = #{auId}
+	</select>
+	<select id="getOrderById" parameterType="String" resultType="Map">
+		SELECT * FROM orderinformation WHERE orderinformation.`o_id` = #{oId}
+	</select>
+	<select id="getStoreById" parameterType="String" resultType="Map">
+		SELECT store.* FROM store WHERE store.`s_id` = #{sId}
+	</select>
+	<update id="updateOrderConsumeState">
+		update orderinformation as o set o.`store_consume_state`=#{store_consume_state} , o.`pay_state`=#{pay_state}, o.`ermanent_integral_bonus` = #{ermanent_integral_bonus} , 
+		o.`time_limited_integration` = #{time_limited_integration} , o.`amount_paid` = #{amount_paid} where o.`o_id` =#{oId}
+	</update>
+	<update id="updateUserIntegration"  >
+		UPDATE averageuser SET averageuser.`limit_integral` = averageuser.`limit_integral` + #{limit_integral}, averageuser.`permanent_points` = averageuser.`permanent_points` + #{permanent_points} WHERE averageuser.`auId` = #{auId}
+	</update>
+	<insert id="addTransactionRecord" parameterType="Map">
+		insert into transactionRecord (tr_id, total_money, o_id, u_id) value(#{tr_id}, #{total_money}, #{o_id}, #{u_id})
+	</insert>
+	<update id="updateOrderPayAndState">
+		UPDATE orderinformation SET orderinformation.`store_consume_state` =#{store_consume_state} , orderinformation.`pay_state` = #{payState} WHERE orderinformation.`o_id`=#{oId}
+	</update>
+
+</mapper>

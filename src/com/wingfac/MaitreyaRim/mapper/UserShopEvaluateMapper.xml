@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.UserShopEvaluateMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.UserShopEvaluate" id="userShopEvaluateMapper">
+		<id column="use_id" property="use_id" jdbcType="BIGINT" />
+		<result property="auId" column="auId" jdbcType="INTEGER" />
+		<result property="s_id" column="s_id" jdbcType="INTEGER" />
+		<result property="user_mark" column="user_mark" jdbcType="INTEGER" />
+		<result property="content" column="content" jdbcType="VARCHAR" />
+		<result property="resetContent" column="resetContent" jdbcType="VARCHAR" />
+		<result property="picA" column="picA" jdbcType="VARCHAR" />
+		<result property="picB" column="picB" jdbcType="VARCHAR" />
+		<result property="picC" column="picC" jdbcType="VARCHAR" />
+		<result property="picD" column="picD" jdbcType="VARCHAR" />
+		<result property="picNum" column="picNum" jdbcType="VARCHAR" />
+		<result property="createTime" column="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`use_id`, `auId`, `s_id`, `user_mark`,`content`,`resetContent`,`picA`,`picB`,`picC`,`picD`,`picNum`,`createTime`
+	</sql>
+
+	<insert id="newScore" parameterType="com.wingfac.MaitreyaRim.po.UserShopEvaluate">
+		INSERT INTO UserShopEvaluate(`auId`,`s_id`,`user_mark`,`content`,`picA`,`picB`,`picC`,`picD`,`picNum`,`createTime`) VALUES(#{auId},#{s_id},#{user_mark},#{picA},#{picB},#{picC},#{picD},#{picNum},now())
+	</insert>
+
+	<select id="viewScoreInformation" parameterType="java.lang.Integer" resultType="com.wingfac.MaitreyaRim.po.UserShopEvaluate">
+		SELECT * FROM UserShopEvaluate WHERE UserShopEvaluate.`s_id`=#{s_id}
+	</select>
+	
+	<select id="selectByID" parameterType="java.lang.Long" resultType="com.wingfac.MaitreyaRim.po.UserShopEvaluate">
+		SELECT * FROM UserShopEvaluate WHERE UserShopEvaluate.`use_id`=#{use_id}
+	</select>
+	
+	<update id="updateShopEvaluate" parameterType="java.util.Map" >
+		update UserShopEvaluate 
+		<set>
+			<if test="content!=null and content!=''">
+				content=#{content},
+			</if>
+			<if test="resetContent!=null and resetContent!=''">
+				resetContent=#{resetContent},
+			</if>
+			<if test="picA!=null and picA!=''">
+				picA=#{picA},
+			</if>
+			<if test="picB!=null and picB!=''">
+				picB=#{picB},
+			</if>
+			<if test="picC!=null and picC!=''">
+				picC=#{picC},
+			</if>
+			<if test="picD!=null and picD!=''">
+				picD=#{picD},
+			</if>
+			<if test="picNum!=null and picNum!=''">
+				picNum=#{picNum},
+			</if>
+		</set>
+		where use_id=#{use_id}
+	</update>
+	
+
+</mapper>

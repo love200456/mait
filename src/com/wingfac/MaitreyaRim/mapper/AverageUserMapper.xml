@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.AverageUserMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.AverageUser" id="averageUserMapper">
+		<id column="auId" property="auId" jdbcType="INTEGER" />
+		<result property="auMobile" column="auMobile" jdbcType="VARCHAR" />
+		<result property="auPassword" column="auPassword" jdbcType="VARCHAR" />
+		<result property="auAvatar" column="auAvatar" jdbcType="VARCHAR" />
+		<result property="auBuyerNick" column="auBuyerNick" jdbcType="VARCHAR" />
+		<result property="auIdentity" column="auIdentity" jdbcType="VARCHAR" />
+		<result property="limit_integral" column="limit_integral" jdbcType="INTEGER" />
+		<result property="permanent_points" column="permanent_points" jdbcType="INTEGER" />
+		<result property="auAddress" column="auAddress" jdbcType="VARCHAR" />
+		<result property="remarks" column="remarks" jdbcType="VARCHAR" />
+		<result property="integral_remark" column="integral_remark" jdbcType="VARCHAR" />
+		<result property="money" column="money" jdbcType="DOUBLE" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`auId`, `auMobile`, `auPassword`, `auAvatar`,
+		`auBuyerNick`, `auIdentity`, `limit_integral`, `permanent_points`,
+		`auAddress`, `remarks`, `integral_remark`,`money`
+	</sql>
+
+	<select id="selectAll" resultType="com.wingfac.MaitreyaRim.po.AverageUser">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AverageUser
+	</select>
+
+	<select id="selectAllFen" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.AverageUser">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AverageUser ORDER BY auId DESC LIMIT #{pstart},#{psize}
+	</select>
+
+	<select id="selectLike" parameterType="java.lang.String"
+		resultType="com.wingfac.MaitreyaRim.po.AverageUser">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AverageUser WHERE AverageUser.`auMobile` LIKE
+		CONCAT('%',#{auMobile,jdbcType=VARCHAR},'%')
+	</select>
+
+	<select id="selectLikeFen" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.AverageUser">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AverageUser WHERE AverageUser.`auMobile` LIKE
+		CONCAT('%',#{auMobile,jdbcType=VARCHAR},'%') order by auId DESC
+		LIMIT
+		#{pstart},#{psize}
+	</select>
+
+	<update id="updateauIdentity" parameterType="java.lang.Integer">
+		UPDATE AverageUser
+		SET
+		AverageUser.`auIdentity`='2' WHERE
+		AverageUser.`auId`=#{auId}
+	</update>
+
+	<select id="selectByauId" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.AverageUser">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AverageUser WHERE AverageUser.`auId`=#{auId}
+	</select>
+
+	<update id="updateauIntegral" parameterType="map">
+		UPDATE AverageUser
+		SET
+		AverageUser.`limit_integral`=#{limit_integral} WHERE
+		AverageUser.`auId`=#{auId}
+	</update>
+
+	<update id="updateLisstate" parameterType="map">
+		UPDATE AverageUser
+		SET
+		AverageUser.`permanent_points`=#{permanent_points} WHERE
+		AverageUser.`auId`=#{auId}
+	</update>
+
+	<update id="updateLisPis" parameterType="map">
+		UPDATE AverageUser
+		SET
+		AverageUser.`permanent_points`=#{permanent_points},AverageUser.`limit_integral`=#{limit_integral}
+		WHERE
+		AverageUser.`auId`=#{auId}
+	</update>
+
+	<delete id="deleteUaer" parameterType="java.lang.Integer">
+		DELETE FROM AverageUser
+		where
+		AverageUser.`auId`=#{auId}
+	</delete>
+	
+	<update id="modifyRemarks" parameterType="map">
+		UPDATE AverageUser
+		SET
+		AverageUser.`remarks`=#{remarks} WHERE
+		AverageUser.`auId`=#{auId}
+	</update>
+	
+	<update id="modifyIntegralRemark" parameterType="map">
+		UPDATE AverageUser
+		SET
+		AverageUser.`integral_remark`=#{integral_remark} WHERE
+		AverageUser.`auId`=#{auId}
+	</update>
+	<update id="updateMoney" parameterType="map">
+		UPDATE AverageUser
+		SET
+		AverageUser.`money`=#{money} WHERE
+		AverageUser.`auId`=#{auId}
+	</update>
+</mapper>

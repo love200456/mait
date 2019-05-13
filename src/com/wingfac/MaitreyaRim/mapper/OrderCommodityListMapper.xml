@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.OrderCommodityListMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.OrderCommodityList"
+		id="orderCommodityListMapper">
+		<id column="ocl_id" property="ocl_id" jdbcType="INTEGER" />
+		<result property="o_id" column="o_id" jdbcType="INTEGER" />
+		<result property="c_name" column="c_name" jdbcType="VARCHAR" />
+		<result property="ocl_num" column="ocl_num" jdbcType="INTEGER" />
+		<result property="c_unit_price" column="c_unit_price" jdbcType="DOUBLE" />
+		<result property="c_introduce" column="c_introduce" jdbcType="VARCHAR" />
+		<result property="c_first_figure" column="c_first_figure" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`ocl_id`, `o_id`, `c_name`, `ocl_num`, `c_unit_price`, `c_introduce`, `c_first_figure`
+	</sql>
+
+	<insert id="insertOC" parameterType="com.wingfac.MaitreyaRim.po.OrderCommodityList">
+		INSERT INTO
+		OrderCommodityList(`o_id`,`c_name`,`ocl_num`,`c_unit_price`,`c_introduce`,`c_first_figure`)
+		VALUES
+		(#{o_id},#{c_name},#{ocl_num},#{c_unit_price},#{c_introduce},#{c_first_figure})
+	</insert>
+
+	<select id="selectByOids" parameterType="java.lang.Integer" resultType="com.wingfac.MaitreyaRim.po.OrderCommodityList">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM OrderCommodityList WHERE OrderCommodityList.`o_id`=#{o_id}
+		ORDER BY ocl_id ASC
+	</select>
+
+	<delete id="delectOC" parameterType="java.lang.Integer" >
+		DELETE FROM OrderCommodityList where OrderCommodityList.`o_id`=#{o_id}
+	</delete>
+
+</mapper>

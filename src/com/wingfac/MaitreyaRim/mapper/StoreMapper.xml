@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.StoreMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.Store" id="storeMapper">
+		<id column="s_id" property="s_id" jdbcType="INTEGER" />
+		<result property="auId" column="auId" jdbcType="INTEGER" />
+		<result property="toc_id" column="toc_id" jdbcType="INTEGER" />
+		<result property="ttc_id" column="ttc_id" jdbcType="INTEGER" />
+		<result property="first_picture" column="first_picture" jdbcType="VARCHAR" />
+		<result property="picture" column="picture" jdbcType="VARCHAR" />
+		<result property="s_logo" column="s_logo" jdbcType="VARCHAR" />
+		<result property="user_mark" column="user_mark" jdbcType="DOUBLE" />
+		<result property="s_name" column="s_name" jdbcType="VARCHAR" />
+		<result property="open_time" column="open_time" jdbcType="VARCHAR" />
+		<result property="s_mobile" column="s_mobile" jdbcType="VARCHAR" />
+		<result property="s_address" column="s_address" jdbcType="VARCHAR" />
+		<result property="describe" column="describe" jdbcType="VARCHAR" />
+		<result property="s_physical" column="s_physical" jdbcType="VARCHAR" />
+		<result property="integral_setting" column="integral_setting" jdbcType="DOUBLE" />
+		<result property="s_longitude" column="s_longitude" jdbcType="DOUBLE" />
+		<result property="s_latitude" column="s_latitude" jdbcType="DOUBLE" />
+		<result property="payment_code" column="payment_code" jdbcType="VARCHAR" />
+		<result property="offset_setting" column="offset_setting" jdbcType="DOUBLE" />
+		<result property="deductible_percentage" column="deductible_percentage" jdbcType="DOUBLE" />
+		<result property="shop_note" column="shop_note" jdbcType="VARCHAR" />
+		<result property="is_open" column="is_open" jdbcType="VARCHAR" />
+		<result property="working_hours" column="working_hours" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`s_id`, `auId`, `toc_id`, `ttc_id`, `first_picture`, `picture`, `s_logo`, `user_mark`, `s_name`, `open_time`, `s_mobile`, `s_address`, `describe`, `s_physical`, `integral_setting`, `s_longitude`, `s_latitude`, `payment_code`, `offset_setting`, `deductible_percentage`, `shop_note`, `is_open`,`working_hours`
+	</sql>
+
+	<insert id="insertStore" parameterType="map">
+		INSERT INTO
+		STORE(`auId`,`toc_id`,`ttc_id`,`first_picture`,`picture`,`s_logo`,`user_mark`,`s_name`,`open_time`,`s_mobile`,`s_address`,`describe`,`s_physical`,`integral_setting`,`s_longitude`,`s_latitude`,`payment_code`,`offset_setting`,`deductible_percentage`,`shop_note`,`is_open`,`working_hours`)
+		VALUES
+		(#{auId},#{toc_id},#{ttc_id},#{first_picture},#{picture},#{s_logo},#{user_mark},#{s_name},#{open_time},#{s_mobile},#{s_address},#{describe},#{s_physical},#{integral_setting},#{s_longitude},#{s_latitude},#{payment_code},#{offset_setting},#{deductible_percentage},#{shop_note},#{is_open},#{working_hours})
+	</insert>
+
+	<select id="selectAll" resultType="com.wingfac.MaitreyaRim.po.Store">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Store ORDER BY s_id DESC LIMIT #{pstart},#{psize}
+	</select>
+
+	<select id="selectAllBytocId" resultType="com.wingfac.MaitreyaRim.po.Store">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Store WHERE Store.`toc_id`=#{toc_id} and Store.`ttc_id`= '0' and Store.`is_open`= '0'
+		ORDER BY s_id DESC LIMIT
+		#{pstart},#{psize}
+	</select>
+
+	<select id="selectAllByttcId" resultType="com.wingfac.MaitreyaRim.po.Store">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Store WHERE Store.`ttc_id`=#{ttc_id} and Store.`is_open`= '0' ORDER BY s_id DESC LIMIT
+		#{pstart},#{psize}
+	</select>
+
+	<select id="selectAllLike" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.Store">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM STORE WHERE store.`s_name` LIKE
+		CONCAT('%',#{s_name,jdbcType=VARCHAR},'%') order by s_id DESC
+		LIMIT
+		#{pstart},#{psize}
+	</select>
+
+	<select id="selectAllLikeTotal" parameterType="java.lang.String"
+		resultType="com.wingfac.MaitreyaRim.po.Store">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM STORE WHERE store.`s_name` LIKE
+		CONCAT('%',#{s_name,jdbcType=VARCHAR},'%')
+	</select>
+
+	<select id="slesctAllPage" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.Store">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM STORE
+	</select>
+
+	<select id="selectByauId" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.Store">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM STORE WHERE store.`auId`=#{auId}
+	</select>
+
+	<select id="selectBysId" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.Store">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM STORE WHERE store.`s_id`=#{s_id}
+	</select>
+
+	<update id="updateInterBysId" parameterType="map">
+		UPDATE STORE SET
+		Store.`integral_setting`=#{integral_setting},Store.`offset_setting`=#{offset_setting},
+		Store.`toc_id`=#{toc_id},Store.`ttc_id`=#{ttc_id},Store.`deductible_percentage`=#{deductible_percentage}
+		WHERE
+		store.`s_id`=#{s_id}
+	</update>
+
+	<update id="updateBysId" parameterType="map">
+		UPDATE Store SET
+		store.`payment_code`=#{payment_code},
+		store.`picture`=#{picture},
+		store.`s_logo`=#{s_logo},
+		store.`s_name`=#{s_name},
+		store.`open_time`=#{open_time},
+		store.`s_mobile`=#{s_mobile},
+		store.`s_address`=#{s_address},
+		store.`describe`=#{describe},
+		store.`s_physical`=#{s_physical},
+		store.`s_longitude`=#{s_longitude},
+		store.`s_latitude`=#{s_latitude},
+		store.`is_open`=#{is_open},
+		<if test="working_hours!=null and working_hours!=''">
+		store.`working_hours`=#{working_hours},
+		</if>
+		store.`deductible_percentage`=#{deductible_percentage}
+		WHERE store.`s_id`=#{s_id}
+	</update>
+
+	<select id="selectByauIdaddress" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.Store">
+		SELECT `s_id`,`s_address`,`s_longitude`,`s_latitude`
+		FROM
+		STORE WHERE store.`auId`=#{auId}
+	</select>
+
+	<update id="updateSaddress" parameterType="map">
+		UPDATE STORE SET
+		store.`s_address`=#{s_address},store.`s_longitude`=#{s_longitude},store.`s_latitude`=#{s_latitude}
+		WHERE
+		store.`s_id`=#{s_id}
+	</update>
+
+	<select id="selectBysName" parameterType="java.lang.String"
+		resultType="com.wingfac.MaitreyaRim.po.Store">
+		SELECT `s_id` FROM STORE WHERE store.`s_name`=#{s_name}
+	</select>
+
+	<delete id="delectBysId" parameterType="java.lang.Integer">
+		DELETE FROM STORE where
+		store.`s_id`=#{s_id}
+	</delete>
+	
+	<update id="updStoreFire" parameterType="map">
+		UPDATE STORE SET
+		store.`first_picture`=#{first_picture}
+		WHERE
+		store.`s_id`=#{s_id}
+	</update>
+	
+	<update id="updateuserMark" parameterType="map">
+		UPDATE STORE SET store.`user_mark`=#{user_mark} WHERE store.`s_id`=#{s_id}
+	</update>
+	
+	<update id="updateCode" parameterType="map">
+		UPDATE STORE SET store.`payment_code`=#{payment_code} WHERE store.`s_id`=#{s_id}
+	</update>
+	
+	<update id="modifyShopRemarks" parameterType="map">
+		UPDATE STORE SET store.`shop_note`=#{shop_note} WHERE store.`s_id`=#{s_id}
+	</update>
+
+	<select id="selectAllStoreByTTC" resultType="com.wingfac.MaitreyaRim.po.Store">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Store WHERE Store.`ttc_id`=#{ttc_id} and Store.`is_open`= '0' ORDER BY s_id DESC 
+	</select>
+
+</mapper>

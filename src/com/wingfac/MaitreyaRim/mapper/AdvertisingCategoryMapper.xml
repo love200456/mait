@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.AdvertisingCategoryMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.AdvertisingCategory"
+		id="advertisingCategoryMapper">
+		<id column="ac_id" property="ac_id" jdbcType="INTEGER" />
+		<result property="s_id" column="s_id" jdbcType="INTEGER" />
+		<result property="ac_picture" column="ac_picture" jdbcType="VARCHAR" />
+		<result property="ac_level" column="ac_level" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`ac_id`, `s_id`, `ac_picture`, `ac_level`
+	</sql>
+
+	<insert id="insertAC" parameterType="map">
+		INSERT INTO
+		AdvertisingCategory(`s_id`,`ac_picture`,`ac_level`)
+		VALUES
+		(#{s_id},#{ac_picture},#{ac_level})
+	</insert>
+
+	<select id="selectOne" resultType="com.wingfac.MaitreyaRim.po.AdvertisingCategory">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AdvertisingCategory WHERE AdvertisingCategory.`ac_level`='1'
+		ORDER BY ac_id ASC
+	</select>
+
+	<select id="selectTwo" resultType="com.wingfac.MaitreyaRim.po.AdvertisingCategory">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AdvertisingCategory WHERE AdvertisingCategory.`ac_level`='2'
+		ORDER BY ac_id ASC
+	</select>
+
+	<update id="updateAC" parameterType="map">
+		UPDATE AdvertisingCategory SET AdvertisingCategory.`s_id`=#{s_id},AdvertisingCategory.`ac_picture`=#{ac_picture} WHERE AdvertisingCategory.`ac_id`=#{ac_id}
+	</update>
+	
+	<select id="selectById" parameterType="java.lang.Integer" resultType="com.wingfac.MaitreyaRim.po.AdvertisingCategory">
+		SELECT <include refid="Base_Column_List" /> FROM AdvertisingCategory WHERE AdvertisingCategory.`ac_id`=#{ac_id}
+	</select>
+	
+	<delete id="batchDelete" parameterType="java.lang.Integer">
+		DELETE FROM AdvertisingCategory WHERE AdvertisingCategory.`s_id`=#{s_id}
+	</delete>
+
+</mapper>
