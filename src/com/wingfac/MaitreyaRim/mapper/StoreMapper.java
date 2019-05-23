@@ -46,5 +46,8 @@ public interface StoreMapper {
 	public Integer modifyShopRemarks(Map<String, Object> map);
 	
 	public List<Store> selectAllStoreByTTC(Integer ttc_id);
+	
+	public List<Store> selectAllStoreByTOC(Integer ttc_id);
+	
 
 }

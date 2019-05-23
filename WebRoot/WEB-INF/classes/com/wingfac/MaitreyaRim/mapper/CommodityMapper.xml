@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.CommodityMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.Commodity" id="commodityMapper">
+		<id column="c_id" property="c_id" jdbcType="INTEGER" />
+		<result property="s_id" column="s_id" jdbcType="INTEGER" />
+		<result property="c_first_figure" column="c_first_figure" jdbcType="VARCHAR" />
+		<result property="c_unit_price" column="c_unit_price" jdbcType="DOUBLE" />
+		<result property="c_name" column="c_name" jdbcType="VARCHAR" />
+		<result property="c_introduce" column="c_introduce" jdbcType="VARCHAR" />
+		<result property="c_picture_one" column="c_picture_one" jdbcType="VARCHAR" />
+		<result property="c_picture_two" column="c_picture_two" jdbcType="VARCHAR" />
+		<result property="c_picture_three" column="c_picture_three" jdbcType="VARCHAR" />
+		<result property="c_picture_four" column="c_picture_four" jdbcType="VARCHAR" />
+		<result property="c_picture_five" column="c_picture_five" jdbcType="VARCHAR" />
+		<result property="c_picture_six" column="c_picture_six" jdbcType="VARCHAR" />
+		<result property="c_picture_seven" column="c_picture_seven" jdbcType="VARCHAR" />
+		<result property="c_picture_eight" column="c_picture_eight" jdbcType="VARCHAR" />
+		<result property="discount_type" column="discount_type" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`c_id`, `s_id`, `c_first_figure`, `c_unit_price`, `c_name`,
+		`c_introduce`,`c_picture_one`,`c_picture_two`, `c_picture_three`,
+		`c_picture_four`, `c_picture_five`,`c_picture_six`,`c_picture_seven`,
+		`c_picture_eight`,`discount_type`
+	</sql>
+
+	<insert id="insertCommodity" parameterType="com.wingfac.MaitreyaRim.po.Commodity">
+		INSERT INTO
+		Commodity(`s_id`,`c_first_figure`,`c_unit_price`,`c_name`,`c_introduce`,`c_picture_one`,`c_picture_two`,`c_picture_three`,`c_picture_four`,`c_picture_five`,`c_picture_six`,`c_picture_seven`,`c_picture_eight`,`discount_type`)
+		VALUES
+		(#{s_id},#{c_first_figure},#{c_unit_price},#{c_name},#{c_introduce},#{c_picture_one},#{c_picture_two},#{c_picture_three},#{c_picture_four},#{c_picture_five},#{c_picture_six},#{c_picture_seven},#{c_picture_eight},#{discount_type})
+	</insert>
+
+	<select id="selectCoAll" resultType="com.wingfac.MaitreyaRim.po.Commodity">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Commodity ORDER BY c_id DESC
+	</select>
+
+	<select id="selectCoLike" parameterType="java.lang.String"
+		resultType="com.wingfac.MaitreyaRim.po.Commodity">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Commodity WHERE commodity.`c_name` LIKE
+		CONCAT('%',#{c_name,jdbcType=VARCHAR},'%') order by c_id DESC
+	</select>
+
+	<select id="selectAll" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.Commodity">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Commodity WHERE commodity.`s_id`=#{s_id} ORDER BY c_id DESC LIMIT
+		#{pstart},#{psize}
+	</select>
+
+	<select id="selectBySiD" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.Commodity">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Commodity
+		WHERE commodity.`s_id`=#{s_id}
+		AND commodity.`discount_type`='0'
+	</select>
+
+	<select id="selectDisBySiD" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.Commodity">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Commodity
+		WHERE commodity.`s_id`=#{s_id}
+		AND commodity.`discount_type`='1'
+	</select>
+
+	<select id="selectDisBySiDChange" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.Commodity">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Commodity
+		WHERE commodity.`s_id`=#{s_id}
+		AND commodity.`discount_type`='1'
+	</select>
+
+	<select id="selectBySearchValAll" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.Commodity">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Commodity WHERE commodity.`c_name` LIKE
+		CONCAT('%',#{c_name,jdbcType=VARCHAR},'%') AND
+		commodity.`s_id`=#{s_id} order by c_id DESC
+		LIMIT
+		#{pstart},#{psize}
+	</select>
+
+	<select id="selectBySearchVal" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.Commodity">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Commodity WHERE commodity.`c_name` LIKE
+		CONCAT('%',#{c_name,jdbcType=VARCHAR},'%') AND
+		commodity.`s_id`=#{s_id}
+	</select>
+
+	<select id="selectBySearchMobile" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.Commodity">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Commodity WHERE commodity.`c_name` LIKE
+		CONCAT('%',#{c_name,jdbcType=VARCHAR},'%') order by c_id DESC
+		LIMIT
+		#{pstart},#{psize}
+	</select>
+
+	<select id="selectAllComLike" parameterType="java.lang.String"
+		resultType="com.wingfac.MaitreyaRim.po.Commodity">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Commodity WHERE commodity.`c_name` LIKE
+		CONCAT('%',#{c_name,jdbcType=VARCHAR},'%') order by c_id DESC
+	</select>
+
+	<select id="selectByCid" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.Commodity">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM Commodity WHERE commodity.`c_id`=#{c_id}
+	</select>
+
+	<delete id="delectCommodity">
+		DELETE FROM Commodity where c_id in
+		<foreach collection="array" item="id" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<update id="updateCommodity" parameterType="com.wingfac.MaitreyaRim.po.Commodity">
+		UPDATE Commodity SET
+		commodity.`c_first_figure`=#{c_first_figure},commodity.`c_unit_price`=#{c_unit_price},commodity.`c_name`=#{c_name},
+		commodity.`c_introduce`=#{c_introduce},commodity.`c_picture_one`=#{c_picture_one},commodity.`c_picture_two`=#{c_picture_two},
+		commodity.`c_picture_three`=#{c_picture_three},commodity.`c_picture_four`=#{c_picture_four},commodity.`c_picture_five`=#{c_picture_five},
+		commodity.`c_picture_six`=#{c_picture_six},commodity.`c_picture_seven`=#{c_picture_seven},commodity.`c_picture_eight`=#{c_picture_eight},
+		commodity.`discount_type`=#{discount_type}
+		WHERE commodity.`c_id`=#{c_id}
+	</update>
+
+	<update id="updateCommodityDiscount" parameterType="com.wingfac.MaitreyaRim.po.Commodity">
+		UPDATE Commodity SET
+		commodity.`discount_type`='0'
+		where commodity.`s_id`=#{s_id}
+		AND commodity.`discount_type`='1'
+	</update>
+
+	<delete id="delectBysId" parameterType="java.lang.Integer">
+		DELETE FROM Commodity
+		where commodity.`s_id`=#{s_id}
+	</delete>
+
+	<select id="selectByStoreID" parameterType="java.lang.Integer" resultType="com.wingfac.MaitreyaRim.po.Commodity" >
+		SELECT * FROM Commodity where commodity.`s_id`=#{s_id}
+	</select>
+
+</mapper>

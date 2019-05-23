@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.ShopRecommendationMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.ShopRecommendation"
+		id="shopRecommendationMapper">
+		<id column="sp_id" property="sp_id" jdbcType="INTEGER" />
+		<result property="s_id" column="s_id" jdbcType="INTEGER" />
+		<result property="s_name" column="s_name" jdbcType="VARCHAR" />
+		<result property="picture" column="picture" jdbcType="VARCHAR" />
+		<result property="describe" column="describe" jdbcType="VARCHAR" />
+		<result property="s_longitude" column="s_longitude" jdbcType="DOUBLE" />
+		<result property="s_latitude" column="s_latitude" jdbcType="DOUBLE" />
+		<result property="sp_level" column="sp_level" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`sp_id`, `s_id`, `s_name`, `picture`, `describe`,
+		`s_longitude`,
+		`s_latitude`,`sp_level`
+	</sql>
+
+	<insert id="insertSR" parameterType="com.wingfac.MaitreyaRim.po.ShopRecommendation">
+		INSERT INTO
+		ShopRecommendation(`s_id`,`s_name`,`picture`,`describe`,`s_longitude`,`s_latitude`,`sp_level`)
+		VALUES
+		(#{s_id},#{s_name},#{picture},#{describe},#{s_longitude},#{s_latitude},#{sp_level})
+	</insert>
+
+	<select id="selectOne" resultType="com.wingfac.MaitreyaRim.po.ShopRecommendation">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM ShopRecommendation WHERE ShopRecommendation.`sp_level`='1' ORDER
+		BY sp_id ASC
+	</select>
+
+	<select id="selectByOne" resultType="com.wingfac.MaitreyaRim.po.ShopRecommendation">
+		SELECT
+		ShopRecommendation.`sp_id`
+		FROM ShopRecommendation WHERE
+		ShopRecommendation.`sp_level`='1' ORDER
+		BY sp_id ASC limit 1
+	</select>
+
+	<select id="selectTwo" resultType="com.wingfac.MaitreyaRim.po.ShopRecommendation">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM ShopRecommendation WHERE ShopRecommendation.`sp_level`='2' ORDER
+		BY sp_id ASC
+	</select>
+
+	<select id="selectByTwo" resultType="com.wingfac.MaitreyaRim.po.ShopRecommendation">
+		SELECT
+		ShopRecommendation.`sp_id`
+		FROM ShopRecommendation WHERE
+		ShopRecommendation.`sp_level`='2' ORDER
+		BY sp_id ASC limit 1
+	</select>
+
+	<delete id="delectSP" parameterType="java.lang.Integer">
+		DELETE
+		FROM
+		ShopRecommendation WHERE
+		ShopRecommendation.`sp_id`=#{sp_id}
+	</delete>
+
+</mapper>

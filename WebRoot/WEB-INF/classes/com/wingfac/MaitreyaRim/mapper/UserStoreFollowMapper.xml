@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.UserStoreFollowMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.UserStoreFollow"
+		id="userStoreFollowMapper">
+		<id column="usf_id" property="usf_id" jdbcType="INTEGER" />
+		<result property="auId" column="auId" jdbcType="INTEGER" />
+		<result property="s_id" column="s_id" jdbcType="INTEGER" />
+		<result property="s_name" column="s_name" jdbcType="VARCHAR" />
+		<result property="s_logo" column="s_logo" jdbcType="VARCHAR" />
+		<result property="integral_setting" column="integral_setting"
+			jdbcType="VARCHAR" />
+		<result property="s_longitude" column="s_longitude" jdbcType="DOUBLE" />
+		<result property="s_latitude" column="s_latitude" jdbcType="DOUBLE" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`usf_id`, `auId`, `s_id`, `s_name`, `s_logo`,
+		`integral_setting`,
+		`s_longitude`, `s_latitude`
+	</sql>
+
+	<insert id="insertUSF" parameterType="com.wingfac.MaitreyaRim.po.UserStoreFollow">
+		INSERT INTO
+		UserStoreFollow(`auId`,`s_id`,`s_name`,`s_logo`,`integral_setting`,`s_longitude`,`s_latitude`)
+		VALUES
+		(#{auId},#{s_id},#{s_name},#{s_logo},#{integral_setting},#{s_longitude},#{s_latitude})
+	</insert>
+
+	<select id="selectByauId" resultType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM UserStoreFollow WHERE UserStoreFollow.`auId`=#{auId} ORDER BY
+		usf_id DESC LIMIT #{pstart},#{psize}
+	</select>
+
+	<delete id="delectUSF" parameterType="map">
+		DELETE FROM UserStoreFollow
+		where
+		UserStoreFollow.`auId`=#{auId} AND UserStoreFollow.`s_id`=#{s_id}
+	</delete>
+
+	<select id="selectByAuidSid" resultType="com.wingfac.MaitreyaRim.po.UserStoreFollow"
+		parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM UserStoreFollow WHERE UserStoreFollow.`auId`=#{auId} and
+		UserStoreFollow.`s_id`=#{s_id}
+	</select>
+
+	<delete id="delectByauId" parameterType="java.lang.Integer">
+		DELETE FROM
+		UserStoreFollow where
+		UserStoreFollow.`auId`=#{auId}
+	</delete>
+
+	<select id="selByauId" resultType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM UserStoreFollow WHERE UserStoreFollow.`auId`=#{auId}
+	</select>
+
+</mapper>

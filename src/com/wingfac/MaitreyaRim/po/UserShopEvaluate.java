@@ -21,6 +21,7 @@ public class UserShopEvaluate implements Serializable {
 	private String auAvatar;
 	private String auBuyerNick;
 	private Date createTime;
+	private Long order_id;
 	public UserShopEvaluate() {
 		super();
 	}
@@ -144,6 +145,15 @@ public class UserShopEvaluate implements Serializable {
 		this.auBuyerNick = auBuyerNick;
 	}
 
+	
+	public Long getOrder_id() {
+		return order_id;
+	}
+
+	public void setOrder_id(Long order_id) {
+		this.order_id = order_id;
+	}
+
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -151,6 +161,7 @@ public class UserShopEvaluate implements Serializable {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
+	
 	
 	public String getCreateTimeStr() {
 		String str="";

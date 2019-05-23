@@ -41,6 +41,7 @@ import com.wingfac.MaitreyaRim.po.OrderTimeVo;
 import com.wingfac.MaitreyaRim.po.OrderUserMobileVo;
 import com.wingfac.MaitreyaRim.po.PerInteStatistics;
 import com.wingfac.MaitreyaRim.po.Store;
+import com.wingfac.MaitreyaRim.po.UserShopEvaluate;
 import com.wingfac.MaitreyaRim.po.WXNotifyParam;
 import com.wingfac.MaitreyaRim.po.WXPayResult;
 import com.wingfac.MaitreyaRim.service.impl.AverageUserService;
@@ -51,6 +52,7 @@ import com.wingfac.MaitreyaRim.service.impl.OrderInformationService;
 import com.wingfac.MaitreyaRim.service.impl.PayService;
 import com.wingfac.MaitreyaRim.service.impl.PerInteStatisticsService;
 import com.wingfac.MaitreyaRim.service.impl.StoreService;
+import com.wingfac.MaitreyaRim.service.impl.UserShopEvaluateService;
 import com.wingfac.MaitreyaRim.util.Constants;
 import com.wingfac.MaitreyaRim.util.DirectPayConfig;
 import com.wingfac.MaitreyaRim.util.ResponseStatus;
@@ -75,6 +77,9 @@ public class OrderInformationMoblieController {
 	private LimInteStatistiesService limInteStatistiesService;
 	@Autowired
 	private PerInteStatisticsService perInteStatisticsService;
+	
+	@Autowired
+	private UserShopEvaluateService userShopEvaluateService;
 	
 	@Resource
 	private PayService payService;
@@ -856,7 +861,11 @@ public class OrderInformationMoblieController {
 			oi.setAuMobile(byOid.getAuMobile());
 			oi.setAuAddress(byOid.getAuAddress());
 			oi.setO_time(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("yyyyMMddHHmmss").parse(byOid.getO_time())));
-			oi.setPayment_time(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("yyyyMMddHHmmss").parse(byOid.getPayment_time())));
+			try{
+				oi.setPayment_time(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("yyyyMMddHHmmss").parse(byOid.getPayment_time())));
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 			oi.setO_amount(byOid.getO_amount());
 			oi.setAmount_paid(byOid.getAmount_paid());
 			oi.setUse_limit_integral(byOid.getUse_limit_integral());
@@ -867,11 +876,17 @@ public class OrderInformationMoblieController {
 			oi.setO_state(byOid.getO_state());
 			oi.setStore_consume_state(byOid.getStore_consume_state());
 			List<OrderCommodityList> list = orderCommodityListService.selectByOid(byOid.getO_id());
+			List<UserShopEvaluate> evaluatelist = userShopEvaluateService.selectByOrderID(Long.valueOf(byOid.getO_id()));
 			if(list.size()>0){
 				map.put("obj", oi);
 				map.put("obj1", list);
 				map.put("ResponseStatus", ResponseStatus.QUERYWASSUCCESS);
 				map.put("msg", "查询成功");
+				if(evaluatelist!=null && evaluatelist.size()>0){
+					map.put("evaluateNumber",evaluatelist.size());
+				}else{
+					map.put("evaluateNumber", "0");
+				}
 			}
 		}else{
 			map.put("ResponseStatus", ResponseStatus.STORENULL);

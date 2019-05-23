@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.OrderInformationMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.OrderInformation" id="orderInformationMapper">
+		<id column="o_id" property="o_id" jdbcType="INTEGER" />
+		<result property="s_id" column="s_id" jdbcType="INTEGER" />
+		<result property="auId" column="auId" jdbcType="INTEGER" />
+		<result property="o_number" column="o_number" jdbcType="VARCHAR" />
+		<result property="s_name" column="s_name" jdbcType="VARCHAR" />
+		<result property="s_mobile" column="s_mobile" jdbcType="VARCHAR" />
+		<result property="auBuyerNick" column="auBuyerNick" jdbcType="VARCHAR" />
+		<result property="auMobile" column="auMobile" jdbcType="VARCHAR" />
+		<result property="auAddress" column="auAddress" jdbcType="VARCHAR" />
+		<result property="o_time" column="o_time" jdbcType="VARCHAR" />
+		<result property="payment_time" column="payment_time" jdbcType="VARCHAR" />
+		<result property="o_amount" column="o_amount" jdbcType="DOUBLE" />
+		<result property="amount_paid" column="amount_paid" jdbcType="DOUBLE" />
+		<result property="use_limit_integral" column="use_limit_integral" jdbcType="INTEGER" />
+		<result property="use_permanent_points" column="use_permanent_points" jdbcType="INTEGER" />
+		<result property="ermanent_integral_bonus" column="ermanent_integral_bonus" jdbcType="DOUBLE" />
+		<result property="time_limited_integration" column="time_limited_integration" jdbcType="DOUBLE" />
+		<result property="full_integral_purchase" column="full_integral_purchase" jdbcType="DOUBLE" />
+		<result property="o_state" column="o_state" jdbcType="VARCHAR" />
+		<result property="store_consume_state" column="store_consume_state" jdbcType="VARCHAR" />
+		<result property="store_unconsume_state" column="store_unconsume_state" jdbcType="VARCHAR" />
+		<result property="pay_state" column="pay_state" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`o_id`, `s_id`, `auId`, `o_number`, `s_name`, `s_mobile`, `auBuyerNick`, `auMobile`, `auAddress`, `o_time`, `payment_time`, `o_amount`, `amount_paid`, `use_limit_integral`, `use_permanent_points`, `ermanent_integral_bonus`, `time_limited_integration`, `full_integral_purchase`, `o_state`, `store_consume_state`, `pay_state`,`store_unconsume_state`
+	</sql>
+
+	<insert id="insertOrdeInfor" parameterType="com.wingfac.MaitreyaRim.po.OrderInformation">
+		INSERT INTO
+		OrderInformation(`s_id`,`auId`,`o_number`,`s_name`,`s_mobile`,`auBuyerNick`,`auMobile`,`auAddress`,`o_time`,`payment_time`,`o_amount`,`amount_paid`,`use_limit_integral`,`use_permanent_points`,`ermanent_integral_bonus`,`time_limited_integration`,`full_integral_purchase`,`o_state`,`store_consume_state`,`pay_state`)
+		VALUES(#{s_id},#{auId},#{o_number},#{s_name},#{s_mobile},#{auBuyerNick},#{auMobile},#{auAddress},#{o_time},#{payment_time},#{o_amount},#{amount_paid},#{use_limit_integral},#{use_permanent_points},#{ermanent_integral_bonus},#{time_limited_integration},#{full_integral_purchase},#{o_state},#{store_consume_state},#{pay_state})
+	</insert>
+
+	<select id="selectAllOrdeInfor" parameterType="java.lang.Integer" resultType="com.wingfac.MaitreyaRim.po.OrderInformation">
+		SELECT <include refid="Base_Column_List" /> FROM OrderInformation WHERE OrderInformation.`s_id`=#{s_id} AND OrderInformation.`pay_state`!='0' ORDER BY o_id DESC
+	</select>
+
+	<select id="selectAllOrdInforFen" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.OrderInformation">
+		SELECT <include refid="Base_Column_List" /> FROM OrderInformation WHERE OrderInformation.`s_id`=#{s_id} AND OrderInformation.`pay_state`!='0' ORDER BY o_id DESC LIMIT #{pstart},#{psize}
+	</select>
+
+	<select id="selectLke" parameterType="map" resultType="com.wingfac.MaitreyaRim.po.OrderInformation">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM OrderInformation WHERE OrderInformation.`auBuyerNick` LIKE
+		CONCAT('%',#{auBuyerNick,jdbcType=VARCHAR},'%') AND
+		OrderInformation.`s_id`=#{s_id} AND OrderInformation.`pay_state`!='0'
+	</select>
+
+	<select id="selectLkeFen" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.OrderInformation">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM OrderInformation WHERE OrderInformation.`auBuyerNick` LIKE
+		CONCAT('%',#{auBuyerNick,jdbcType=VARCHAR},'%') AND
+		OrderInformation.`s_id`=#{s_id} AND OrderInformation.`pay_state`!='0' order by o_id DESC
+		LIMIT
+		#{pstart},#{psize}
+	</select>
+
+	<select id="selectByauId" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.OrderInformation">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM OrderInformation WHERE OrderInformation.`auId`=#{auId} ORDER BY
+		OrderInformation.`o_id` DESC LIMIT 1
+	</select>
+
+	<select id="selectByOid" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.OrderInformation">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM OrderInformation WHERE OrderInformation.`o_id`=#{o_id}
+	</select>
+
+	<update id="updateOrdrInfer" parameterType="map">
+		UPDATE OrderInformation SET OrderInformation.`payment_time`=#{payment_time},OrderInformation.`amount_paid`=#{amount_paid},OrderInformation.`use_limit_integral`=#{use_limit_integral},OrderInformation.`use_permanent_points`=#{use_permanent_points},OrderInformation.`ermanent_integral_bonus`=#{ermanent_integral_bonus},OrderInformation.`time_limited_integration`=#{time_limited_integration} WHERE OrderInformation.`o_id`=#{o_id}
+	</update>
+
+	<update id="updateOstate" parameterType="java.lang.Integer">
+		UPDATE OrderInformation SET OrderInformation.`o_state`='1' WHERE OrderInformation.`o_id`=#{o_id}
+	</update>
+
+	<update id="updateConsume" parameterType="java.lang.Integer">
+		UPDATE OrderInformation SET OrderInformation.`store_consume_state`='1' WHERE OrderInformation.`o_id`=#{o_id} and OrderInformation.`o_state`!='0'
+	</update>
+
+	<delete id="delectOrdeInfor">
+		DELETE FROM OrderInformation where o_id in <foreach collection="array" item="id" open="(" separator="," close=")"> #{id} </foreach>
+	</delete>
+
+	<delete id="delectBysId" parameterType="java.lang.Integer">
+		DELETE FROM OrderInformation where OrderInformation.`s_id`=#{s_id}
+	</delete>
+
+	<select id="queryOrderViaUserID" parameterType="java.lang.Integer" resultType="com.wingfac.MaitreyaRim.po.OrderInformation">
+		SELECT <include refid="Base_Column_List" /> FROM OrderInformation WHERE OrderInformation.`auId`=#{auId} AND OrderInformation.`pay_state`!='0'
+	</select>
+	
+	<delete id="delectBtoId" parameterType="java.lang.Integer">
+		DELETE FROM OrderInformation where OrderInformation.`o_id`=#{o_id}
+	</delete>
+	
+	<update id="updateOrderTime" parameterType="map">
+		UPDATE OrderInformation SET OrderInformation.`payment_time`=#{payment_time} WHERE OrderInformation.`o_id`=#{o_id}
+	</update>
+	
+	<update id="modifyOrderAddress" parameterType="map">
+		UPDATE OrderInformation SET OrderInformation.`auAddress`=#{auAddress} WHERE OrderInformation.`o_id`=#{o_id}
+	</update>
+	
+	<update id="modifyOrderAllPurchase" parameterType="map">
+		UPDATE OrderInformation SET OrderInformation.`full_integral_purchase`=#{full_integral_purchase},
+		OrderInformation.`use_limit_integral`='0',
+		OrderInformation.`use_permanent_points`='0',
+		OrderInformation.`ermanent_integral_bonus`='0.0',
+		OrderInformation.`time_limited_integration`='0.0',
+		OrderInformation.`amount_paid`='0.0'
+		WHERE OrderInformation.`o_id`=#{o_id}
+	</update>
+	
+	<select id="viewAllorder" resultType="com.wingfac.MaitreyaRim.po.OrderInformation">
+		SELECT <include refid="Base_Column_List" /> FROM OrderInformation
+	</select>
+	
+	<update id="updateSaoma" parameterType="java.lang.Integer">
+		UPDATE OrderInformation SET OrderInformation.`full_integral_purchase`='0',
+		OrderInformation.`use_limit_integral`='0',
+		OrderInformation.`use_permanent_points`='0',
+		OrderInformation.`ermanent_integral_bonus`='0.0',
+		OrderInformation.`time_limited_integration`='0.0'
+		WHERE OrderInformation.`o_id`=#{o_id}
+	</update>
+	
+	<update id="updateOrderInfo" parameterType="Map"  >
+		update OrderInformation 
+		<set>
+			<if test="use_limit_integral!=null and use_limit_integral!=''">
+				OrderInformation.`use_limit_integral`=#{use_limit_integral},
+			</if>
+			<if test="use_permanent_points!=null and use_permanent_points!=''">
+				OrderInformation.`use_permanent_points`=#{use_permanent_points},
+			</if>
+			<if test="o_state!=null and o_state!=''">
+				OrderInformation.`o_state`=#{o_state},
+			</if>
+			<if test="amount_paid!=null and amount_paid!=''">
+				OrderInformation.`amount_paid`=#{amount_paid},
+			</if>
+			<if test="pay_state!=null and pay_state!=''">
+				OrderInformation.`pay_state`=#{pay_state},
+			</if>
+			<if test="payment_time!=null and payment_time!=''">
+				OrderInformation.`payment_time`=#{payment_time},
+			</if>
+			<if test="store_unconsume_state and store_unconsume_state!=''">
+				OrderInformation.`store_unconsume_state`=#{store_unconsume_state},
+			</if>
+		</set>
+		WHERE OrderInformation.`o_id`=#{o_id}
+	</update>
+	
+
+</mapper>

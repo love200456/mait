@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.PerInteStatisticsMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.PerInteStatistics"
+		id="perInteStatisticsMapper">
+		<id column="pis_id" property="pis_id" jdbcType="INTEGER" />
+		<result property="auId" column="auId" jdbcType="INTEGER" />
+		<result property="s_name" column="s_name" jdbcType="VARCHAR" />
+		<result property="c_name" column="c_name" jdbcType="VARCHAR" />
+		<result property="pis_consumption" column="pis_consumption"
+			jdbcType="INTEGER" />
+		<result property="pis_get" column="pis_get" jdbcType="INTEGER" />
+		<result property="pis_time" column="pis_time" jdbcType="VARCHAR" />
+		<result property="pis_category" column="pis_category" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`pis_id`, `auId`, `s_name`, `c_name`, `pis_consumption`,
+		`pis_get`, `pis_time`, `pis_category`
+	</sql>
+
+	<insert id="insertPI" parameterType="com.wingfac.MaitreyaRim.po.PerInteStatistics">
+		INSERT INTO
+		PerInteStatistics(`auId`,`s_name`,`c_name`,`pis_consumption`,`pis_get`,`pis_time`,`pis_category`)
+		VALUES
+		(#{auId},#{s_name},#{c_name},#{pis_consumption},#{pis_get},#{pis_time},#{pis_category})
+	</insert>
+
+	<select id="selectByauId" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.PerInteStatistics">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM PerInteStatistics WHERE PerInteStatistics.`auId`=#{auId}
+		ORDER BY
+		pis_id DESC
+	</select>
+
+	<delete id="delectInte" parameterType="java.lang.Integer">
+		DELETE FROM
+		PerInteStatistics where PerInteStatistics.`auId`=#{auId}
+	</delete>
+
+</mapper>

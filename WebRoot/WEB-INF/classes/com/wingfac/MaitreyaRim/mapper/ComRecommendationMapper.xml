@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.ComRecommendationMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.ComRecommendation"
+		id="comRecommendationMapper">
+		<id column="cr_id" property="cr_id" jdbcType="INTEGER" />
+		<result property="s_id" column="s_id" jdbcType="INTEGER" />
+		<result property="c_id" column="c_id" jdbcType="INTEGER" />
+		<result property="c_first_figure" column="c_first_figure" jdbcType="VARCHAR" />
+		<result property="c_unit_price" column="c_unit_price" jdbcType="DOUBLE" />
+		<result property="c_name" column="c_name" jdbcType="VARCHAR" />
+		<result property="cr_level" column="cr_level" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`cr_id`, `s_id`, `c_id`, `c_first_figure`, `c_unit_price`,
+		`c_name`,`cr_level`
+	</sql>
+
+	<insert id="insertCR" parameterType="com.wingfac.MaitreyaRim.po.ComRecommendation">
+		INSERT INTO
+		ComRecommendation(`s_id`,`c_id`,`c_first_figure`,`c_unit_price`,`c_name`,`cr_level`)
+		VALUES
+		(#{s_id},#{c_id},#{c_first_figure},#{c_unit_price},#{c_name},#{cr_level})
+	</insert>
+
+	<select id="selectOneCR" resultType="com.wingfac.MaitreyaRim.po.ComRecommendation">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM ComRecommendation WHERE ComRecommendation.`cr_level`='1' ORDER
+		BY cr_id ASC
+	</select>
+
+	<select id="selectByOneCR" resultType="com.wingfac.MaitreyaRim.po.ComRecommendation">
+		SELECT
+		ComRecommendation.`cr_id`
+		FROM ComRecommendation WHERE
+		ComRecommendation.`cr_level`='1' ORDER
+		BY cr_id ASC limit 1
+	</select>
+
+	<select id="selectTwoCR" resultType="com.wingfac.MaitreyaRim.po.ComRecommendation">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM ComRecommendation WHERE ComRecommendation.`cr_level`='2' ORDER
+		BY cr_id ASC
+	</select>
+
+	<select id="selectByTwoCR" resultType="com.wingfac.MaitreyaRim.po.ComRecommendation">
+		SELECT
+		ComRecommendation.`cr_id`
+		FROM ComRecommendation WHERE
+		ComRecommendation.`cr_level`='2' ORDER
+		BY cr_id ASC limit 1
+	</select>
+
+	<delete id="delectCR" parameterType="java.lang.Integer">
+		DELETE
+		FROM
+		ComRecommendation WHERE
+		ComRecommendation.`cr_id`=#{cr_id}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="java.lang.Integer">
+		DELETE FROM ComRecommendation WHERE ComRecommendation.`s_id`=#{s_id}
+	</delete>
+	
+	<delete id="deleCid" parameterType="java.lang.Integer">
+		DELETE FROM ComRecommendation WHERE ComRecommendation.`c_id`=#{c_id}
+	</delete>
+
+</mapper>

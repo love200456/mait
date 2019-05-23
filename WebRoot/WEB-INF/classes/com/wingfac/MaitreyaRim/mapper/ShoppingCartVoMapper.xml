@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.ShoppingCartVoMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.ShoppingCartVo"
+		id="shoppingCartVoMapper">
+		<id column="sc_id" property="sc_id" jdbcType="INTEGER" />
+		<result property="auId" column="auId" jdbcType="INTEGER" />
+		<result property="c_id" column="c_id" jdbcType="INTEGER" />
+		<result property="c_first_figure" column="c_first_figure"
+			jdbcType="VARCHAR" />
+		<result property="c_unit_price" column="c_unit_price" jdbcType="DOUBLE" />
+		<result property="c_name" column="c_name" jdbcType="VARCHAR" />
+		<result property="c_introduce" column="c_introduce" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`sc_id`, `auId`, `c_id`, `c_first_figure`, `c_unit_price`,
+		`c_name`, `c_introduce`
+	</sql>
+
+	<insert id="insertShopCar" parameterType="com.wingfac.MaitreyaRim.po.ShoppingCartVo">
+		INSERT INTO
+		ShoppingCart(`auId`,`c_id`,`c_first_figure`,`c_unit_price`,`c_name`,`c_introduce`)
+		VALUES
+		(#{auId},#{c_id},#{c_first_figure},#{c_unit_price},#{c_name},#{c_introduce})
+	</insert>
+
+	<select id="selectAll" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.ShoppingCartVo">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM ShoppingCart WHERE ShoppingCart.`auId`=#{auId} ORDER BY sc_id
+		DESC LIMIT #{pstart},#{psize}
+	</select>
+
+	<delete id="deleteShoppCart" parameterType="map">
+		DELETE FROM
+		ShoppingCart where ShoppingCart.`auId`=#{auId} and
+		ShoppingCart.`sc_id`=#{sc_id}
+	</delete>
+
+	<select id="selectPan" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.ShoppingCartVo">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM ShoppingCart WHERE ShoppingCart.`auId`=#{auId} and
+		ShoppingCart.`c_id`=#{c_id}
+	</select>
+
+	<delete id="deletePan" parameterType="map">
+		DELETE FROM
+		ShoppingCart
+		where ShoppingCart.`auId`=#{auId} and
+		ShoppingCart.`c_id`=#{c_id}
+	</delete>
+
+	<delete id="delevtByauId" parameterType="java.lang.Integer">
+		DELETE FROM
+		ShoppingCart
+		where ShoppingCart.`auId`=#{auId}
+	</delete>
+
+	<select id="selByauId" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.ShoppingCartVo">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM ShoppingCart WHERE ShoppingCart.`auId`=#{auId}
+	</select>
+
+</mapper>

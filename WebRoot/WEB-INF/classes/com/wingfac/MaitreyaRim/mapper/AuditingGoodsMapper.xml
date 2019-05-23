@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.AuditingGoodsMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.AuditingGoods"
+		id="auditingGoodsMapper">
+		<id column="ag_id" property="ag_id" jdbcType="INTEGER" />
+		<result property="s_id" column="s_id" jdbcType="INTEGER" />
+		<result property="first_figure" column="first_figure" jdbcType="VARCHAR" />
+		<result property="unit_price" column="unit_price" jdbcType="DOUBLE" />
+		<result property="ag_name" column="ag_name" jdbcType="VARCHAR" />
+		<result property="ag_introduce" column="ag_introduce" jdbcType="VARCHAR" />
+		<result property="picture_one" column="picture_one" jdbcType="VARCHAR" />
+		<result property="picture_two" column="picture_two" jdbcType="VARCHAR" />
+		<result property="picture_three" column="picture_three"
+			jdbcType="VARCHAR" />
+		<result property="picture_four" column="picture_four" jdbcType="VARCHAR" />
+		<result property="picture_five" column="picture_five" jdbcType="VARCHAR" />
+		<result property="picture_six" column="picture_six" jdbcType="VARCHAR" />
+		<result property="picture_seven" column="picture_seven"
+			jdbcType="VARCHAR" />
+		<result property="picture_eight" column="picture_eight"
+			jdbcType="VARCHAR" />
+		<result property="s_name" column="s_name" jdbcType="VARCHAR" />
+		<result property="s_mobile" column="s_mobile" jdbcType="VARCHAR" />
+		<result property="discount_type" column="discount_type" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`ag_id`, `s_id`, `first_figure`, `unit_price`, `ag_name`,
+		`ag_introduce`,`picture_one`,`picture_two`, `picture_three`,
+		`picture_four`, `picture_five`,`picture_six`,`picture_seven`,
+		`picture_eight`,`s_name`, `s_mobile`, `discount_type`
+	</sql>
+
+	<insert id="insertAg" parameterType="com.wingfac.MaitreyaRim.po.AuditingGoods">
+		INSERT INTO
+		AuditingGoods(`s_id`,`first_figure`,`unit_price`,`ag_name`,`ag_introduce`,`picture_one`,`picture_two`,`picture_three`,`picture_four`,`picture_five`,`picture_six`,`picture_seven`,`picture_eight`,`s_name`,`s_mobile`,`discount_type`)
+		VALUES
+		(#{s_id},#{first_figure},#{unit_price},#{ag_name},#{ag_introduce},#{picture_one},#{picture_two},#{picture_three},#{picture_four},#{picture_five},#{picture_six},#{picture_seven},#{picture_eight},#{s_name},#{s_mobile},#{discount_type})
+	</insert>
+
+	<select id="selectAllPage" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.AuditingGoods">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AuditingGoods ORDER BY ag_id DESC LIMIT #{pstart},#{psize}
+	</select>
+
+	<select id="selectAllPageTotal" resultType="com.wingfac.MaitreyaRim.po.AuditingGoods">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AuditingGoods
+	</select>
+
+	<select id="selectByLisk" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.AuditingGoods">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AuditingGoods WHERE AuditingGoods.`ag_name` LIKE
+		CONCAT('%',#{ag_name,jdbcType=VARCHAR},'%') order by ag_id DESC
+		LIMIT
+		#{pstart},#{psize}
+	</select>
+
+	<select id="selectLike" parameterType="java.lang.String"
+		resultType="com.wingfac.MaitreyaRim.po.AuditingGoods">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AuditingGoods WHERE AuditingGoods.`ag_name` LIKE
+		CONCAT('%',#{ag_name,jdbcType=VARCHAR},'%')
+	</select>
+
+	<delete id="delectAg">
+		DELETE FROM AuditingGoods where ag_id in
+		<foreach collection="array" item="id" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<select id="selectByagId" parameterType="java.lang.Integer" resultType="com.wingfac.MaitreyaRim.po.AuditingGoods">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AuditingGoods WHERE AuditingGoods.`ag_id`=#{ag_id}
+	</select>
+
+</mapper>

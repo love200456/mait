@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.LogonMapper">
+
+	<select id="logon" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.AverageUserVo">
+		SELECT `auId` as `auId`,`auMobile` as
+		`auMobile`,`auPassword` as
+		`auPassword`,`auAvatar` as
+		`auAvatar`,`auBuyerNick` as `auBuyerNick`,`auIdentity`
+		as
+		`auIdentity`,`limit_integral` as `limit_integral`,`permanent_points`
+		as
+		`permanent_points`,`auAddress` as `auAddress` FROM
+		AverageUser
+		WHERE AverageUser.`auMobile`=#{auMobile} and
+		AverageUser.`auPassword`=#{auPassword}
+	</select>
+	
+	<select id="jude" parameterType="java.lang.String" resultType="com.wingfac.MaitreyaRim.po.AverageUserVo">
+		SELECT `auId` as `auId`,`auMobile` as
+		`auMobile`,`auPassword` as
+		`auPassword`,`auAvatar` as
+		`auAvatar`,`auBuyerNick` as `auBuyerNick`,`auIdentity`
+		as
+		`auIdentity`,`limit_integral` as `limit_integral`,`permanent_points`
+		as
+		`permanent_points`,`auAddress` as `auAddress` FROM
+		AverageUser
+		WHERE AverageUser.`auMobile`=#{auMobile}
+	</select>
+
+</mapper>

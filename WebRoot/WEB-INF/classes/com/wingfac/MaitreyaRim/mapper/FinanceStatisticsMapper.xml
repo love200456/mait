@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.FinanceStatisticsMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.FinanceStatistics"
+		id="financeStatisticsMapper">
+		<id column="fs_id" property="fs_id" jdbcType="INTEGER" />
+		<result property="s_id" column="s_id" jdbcType="INTEGER" />
+		<result property="s_name" column="s_name" jdbcType="VARCHAR" />
+		<result property="s_mobile" column="s_mobile" jdbcType="VARCHAR" />
+		<result property="s_address" column="s_address" jdbcType="VARCHAR" />
+		<result property="fs_turnover" column="fs_turnover" jdbcType="DOUBLE" />
+		<result property="fs_time" column="fs_time" jdbcType="VARCHAR" />
+		<result property="o_number" column="o_number" jdbcType="VARCHAR" />
+		<result property="ermanent_integral_bonus" column="ermanent_integral_bonus"
+			jdbcType="DOUBLE" />
+		<result property="time_limited_integration" column="time_limited_integration"
+			jdbcType="DOUBLE" />
+		<result property="full_integral_purchase" column="full_integral_purchase"
+			jdbcType="INTEGER" />
+		<result property="ocl_num" column="ocl_num" jdbcType="INTEGER" />
+		<result property="c_unit_price" column="c_unit_price" jdbcType="DOUBLE" />
+		<result property="time_limited_sum" column="time_limited_sum"
+			jdbcType="DOUBLE" />
+		<result property="ermanent_integral_sum" column="ermanent_integral_sum"
+			jdbcType="DOUBLE" />
+		<result property="price_sum" column="price_sum" jdbcType="DOUBLE" />
+		<result property="fs_turnover_sum" column="fs_turnover_sum"
+			jdbcType="DOUBLE" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`fs_id`, `s_id`, `s_name`, `s_mobile`, `s_address`,
+		`fs_turnover`, `fs_time`, `o_number`, `ermanent_integral_bonus`,
+		`time_limited_integration`, `full_integral_purchase`, `ocl_num`,
+		`c_unit_price`
+	</sql>
+	<sql id="Base_Column_Sum">
+		sum(`time_limited_integration`) time_limited_sum,
+		sum(`full_integral_purchase`) ermanent_integral_sum,
+		sum(c_unit_price*ocl_num) price_sum,
+		sum(`full_integral_purchase`) fs_turnover_sum
+	</sql>
+	<insert id="insertFS" parameterType="com.wingfac.MaitreyaRim.po.FinanceStatistics">
+		INSERT INTO
+		FinanceStatistics(`s_id`,`s_name`,`s_mobile`,`s_address`,`fs_turnover`,`fs_time`,`o_number`,`ermanent_integral_bonus`,`time_limited_integration`,`full_integral_purchase`,`ocl_num`,`c_unit_price`)
+		VALUES(#{s_id},#{s_name},#{s_mobile},#{s_address},#{fs_turnover},#{fs_time},#{o_number},#{ermanent_integral_bonus},#{time_limited_integration},#{full_integral_purchase},#{ocl_num},#{c_unit_price})
+	</insert>
+
+	<select id="selectAll" resultType="com.wingfac.MaitreyaRim.po.FinanceStatistics">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM FinanceStatistics ORDER BY fs_id DESC
+	</select>
+
+	<select id="selectAllSum" resultType="com.wingfac.MaitreyaRim.po.FinanceStatistics">
+		SELECT
+		<include refid="Base_Column_Sum" />
+		FROM FinanceStatistics
+	</select>
+
+	<select id="selectPage" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.FinanceStatistics">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM FinanceStatistics ORDER BY fs_id DESC LIMIT #{pstart},#{psize}
+	</select>
+
+	<select id="selectLikeAll" parameterType="java.lang.String"
+		resultType="com.wingfac.MaitreyaRim.po.FinanceStatistics">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM FinanceStatistics WHERE FinanceStatistics.`s_name` LIKE
+		CONCAT('%',#{s_name,jdbcType=VARCHAR},'%') order by fs_id DESC
+	</select>
+
+	<select id="selectLikeAllSum" parameterType="java.lang.String"
+		resultType="com.wingfac.MaitreyaRim.po.FinanceStatistics">
+		SELECT
+		<include refid="Base_Column_Sum" />
+		FROM FinanceStatistics WHERE FinanceStatistics.`s_name` LIKE
+		CONCAT('%',#{s_name,jdbcType=VARCHAR},'%')
+	</select>
+
+	<select id="selectLike" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.FinanceStatistics">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM FinanceStatistics WHERE FinanceStatistics.`s_name` LIKE
+		CONCAT('%',#{s_name,jdbcType=VARCHAR},'%') order by fs_id DESC LIMIT
+		#{pstart},#{psize}
+	</select>
+
+	<select id="selectTimeTotal" parameterType="map" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM FinanceStatistics WHERE
+		UNIX_TIMESTAMP(#{endtime}) >
+		UNIX_TIMESTAMP(FinanceStatistics.`fs_time`) AND
+		UNIX_TIMESTAMP(FinanceStatistics.`fs_time`) >
+		UNIX_TIMESTAMP(#{strtime})
+	</select>
+
+	<select id="selectTimeTotalSum" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.FinanceStatistics">
+		SELECT
+		<include refid="Base_Column_Sum" />
+		FROM FinanceStatistics WHERE
+		UNIX_TIMESTAMP(#{endtime}) >
+		UNIX_TIMESTAMP(FinanceStatistics.`fs_time`) AND
+		UNIX_TIMESTAMP(FinanceStatistics.`fs_time`) >
+		UNIX_TIMESTAMP(#{strtime})
+	</select>
+
+	<select id="selectTimePage" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.FinanceStatistics">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM FinanceStatistics WHERE UNIX_TIMESTAMP(#{endtime}) >
+		UNIX_TIMESTAMP(fs_time) AND UNIX_TIMESTAMP(fs_time) >
+		UNIX_TIMESTAMP(#{strtime}) order by fs_id DESC LIMIT
+		#{pstart},#{psize}
+	</select>
+
+	<delete id="delectFS">
+		DELETE FROM FinanceStatistics where fs_id in
+		<foreach collection="array" item="id" open="(" separator=","
+			close=")"> #{id} </foreach>
+	</delete>
+
+	<select id="viewFinancialinformation" parameterType="java.lang.String"
+		resultType="com.wingfac.MaitreyaRim.po.FinanceStatistics">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM FinanceStatistics WHERE FinanceStatistics.`o_number`=#{o_number}
+	</select>
+
+</mapper>

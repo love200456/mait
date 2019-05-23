@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.SysAdminMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.Store" id="storeMapper">
+		<id column="sa_id" property="sa_id" jdbcType="INTEGER" />
+		<result property="sa_mobile" column="sa_mobile" jdbcType="VARCHAR" />
+		<result property="sa_password" column="sa_password" jdbcType="VARCHAR" />
+		<result property="sa_role" column="sa_role" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="selectSys" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.SysAdmin">
+		SELECT `sa_id` as `sa_id`,`sa_mobile` as
+		`sa_mobile`,`sa_password` as
+		`sa_password`,`sa_role` as `sa_role`  FROM sysadmin WHERE
+		sysadmin.`sa_mobile`=#{sa_mobile} and
+		sysadmin.`sa_password`=#{sa_password}
+	</select>
+</mapper>

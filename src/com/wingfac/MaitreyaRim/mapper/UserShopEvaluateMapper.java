@@ -15,4 +15,6 @@ public interface UserShopEvaluateMapper {
 
 	public UserShopEvaluate selectByID(Long use_id);
 	
+	public List<UserShopEvaluate> selectByOrderID(Long order_id);
+	
 }

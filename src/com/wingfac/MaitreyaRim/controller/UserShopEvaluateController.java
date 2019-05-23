@@ -40,11 +40,12 @@ public class UserShopEvaluateController {
 	private AverageUserService averageUserService;
 
 	@ResponseBody
-	@RequestMapping("viewOrderInformation")
+	@RequestMapping("newGradingInformation")
 	public Map<String, Object> newGradingInformation(
 			HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("o_id") String o_id,
 			@RequestParam("user_mark") String user_mark,
+			@RequestParam(value = "content", required = false) String content,
 			@RequestParam(value = "picA", required = false) MultipartFile picA,
 			@RequestParam(value = "picB", required = false) MultipartFile picB,
 			@RequestParam(value = "picC", required = false) MultipartFile picC,
@@ -88,10 +89,11 @@ public class UserShopEvaluateController {
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			
+			use.setContent(content);
 			use.setAuId(selectByOid.getAuId());
 			use.setS_id(selectByOid.getS_id());
 			use.setUser_mark(Integer.parseInt(user_mark));
+			use.setOrder_id(Long.valueOf(o_id));
 			Integer newScore = userShopEvaluateService.newScore(use);
 			if (newScore > 0) {
 				List<UserShopEvaluate> list = userShopEvaluateService.viewScoreInformation(selectByOid.getS_id());

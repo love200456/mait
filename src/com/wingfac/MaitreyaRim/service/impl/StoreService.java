@@ -92,4 +92,8 @@ public class StoreService {
 	public List<Store> selectAllStoreByTTC(Integer ttc_id){
 		return storeMapper.selectAllStoreByTTC(ttc_id);
 	}
+	
+	public List<Store> selectAllStoreByTOC(Integer ttc_id){
+		return storeMapper.selectAllStoreByTOC(ttc_id);
+	}
 }

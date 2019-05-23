@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.UserMessageMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.UserMessage" id="userMessageMapper">
+		<id column="um_id" property="um_id" jdbcType="INTEGER" />
+		<result property="auId" column="auId" jdbcType="INTEGER" />
+		<result property="pm_content" column="pm_content" jdbcType="VARCHAR" />
+		<result property="um_time" column="um_time" jdbcType="VARCHAR" />
+		<result property="um_flag" column="um_flag" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`um_id`, `auId`, `pm_content`, `um_time`
+	</sql>
+
+	<insert id="insertUM" parameterType="com.wingfac.MaitreyaRim.po.UserMessage">
+		INSERT INTO
+		UserMessage(`auId`,`pm_content`,`um_time`)
+		VALUES
+		(#{auId},#{pm_content},#{um_time})
+	</insert>
+
+	<select id="selectByauId" parameterType="map"
+		resultType="com.wingfac.MaitreyaRim.po.UserMessage">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM UserMessage WHERE UserMessage.`auId`=#{auId}
+		AND UserMessage.`um_flag`='1'
+		ORDER BY um_id DESC
+	</select>
+	
+	<delete id="delectByauId" parameterType="java.lang.Integer">
+		DELETE FROM UserMessage where
+		UserMessage.`auId`=#{auId}
+		AND UserMessage.`um_flag`='1'
+	</delete>
+	
+	<delete id="deleteUserAnnouncement" parameterType="java.lang.Integer">
+		DELETE FROM UserMessage where UserMessage.`um_id`=#{um_id}
+	</delete>
+
+</mapper>

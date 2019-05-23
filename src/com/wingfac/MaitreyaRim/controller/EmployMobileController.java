@@ -124,6 +124,17 @@ public class EmployMobileController {
 		m.put("psize", psizes);
 
 		List<Employ> allPassList = employService.selectAllPass(m);
+		for(Employ employ:allPassList){
+			Integer auid=employ.getAuId();
+			if(auid!=null){
+				Store store=storeService.selectByauId(auid);
+				if(store!=null){
+					employ.setS_name(store.getS_name());
+					employ.setS_address(store.getS_address());
+				}
+			}
+
+		}
 		if (allPassList.size() > 0) {
 			map.put("ResponseStatus", ResponseStatus.QUERYWASSUCCESS);// '0'
 			map.put("msg", ResponseStatus.QUERYWASSUCCESS_CN_MSG);// '查询成功'

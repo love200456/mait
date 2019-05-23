@@ -29,4 +29,8 @@ public class UserShopEvaluateService {
 	public UserShopEvaluate selectByID(Long use_id){
 		return userShopEvaluateMapper.selectByID(use_id);
 	}
+	
+	public List<UserShopEvaluate> selectByOrderID(Long order_id){
+		return userShopEvaluateMapper.selectByOrderID(order_id);
+	}
 }

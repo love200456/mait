@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wingfac.MaitreyaRim.mapper.LimInteStatistiesMapper">
+	<resultMap type="com.wingfac.MaitreyaRim.po.LimInteStatisties"
+		id="limInteStatistiesMapper">
+		<id column="lis_id" property="lis_id" jdbcType="INTEGER" />
+		<result property="auId" column="auId" jdbcType="INTEGER" />
+		<result property="s_name" column="s_name" jdbcType="VARCHAR" />
+		<result property="c_name" column="c_name" jdbcType="VARCHAR" />
+		<result property="lis_consumption" column="lis_consumption"
+			jdbcType="INTEGER" />
+		<result property="lis_get" column="lis_get" jdbcType="INTEGER" />
+		<result property="lis_time" column="lis_time" jdbcType="VARCHAR" />
+		<result property="lis_category" column="lis_category" jdbcType="VARCHAR" />
+		<result property="lis_term" column="lis_term" jdbcType="VARCHAR" />
+		<result property="lis_state" column="lis_state" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`lis_id`, `auId`, `s_name`, `c_name`, `lis_consumption`,
+		`lis_get`, `lis_time`, `lis_category`, `lis_term`, `lis_state`
+	</sql>
+
+	<insert id="insertLI" parameterType="com.wingfac.MaitreyaRim.po.LimInteStatisties">
+		INSERT INTO
+		LimInteStatisties(`auId`,`s_name`,`c_name`,`lis_consumption`,`lis_get`,`lis_time`,`lis_category`,`lis_term`,`lis_state`)
+		VALUES
+		(#{auId},#{s_name},#{c_name},#{lis_consumption},#{lis_get},#{lis_time},#{lis_category},#{lis_term},#{lis_state})
+	</insert>
+
+	<select id="selectByauId" parameterType="java.lang.Integer"
+		resultType="com.wingfac.MaitreyaRim.po.LimInteStatisties">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM LimInteStatisties WHERE LimInteStatisties.`auId`=#{auId}
+		ORDER BY
+		lis_id DESC
+	</select>
+
+	<update id="updateLisstate" parameterType="java.lang.Integer">
+		UPDATE
+		LimInteStatisties
+		SET
+		LimInteStatisties.`lis_state`='2' WHERE
+		LimInteStatisties.`auId`=#{auId} and
+		LimInteStatisties.`lis_state`!='2'
+	</update>
+
+	<delete id="delectById" parameterType="java.lang.Integer">
+		DELETE FROM
+		LimInteStatisties where
+		LimInteStatisties.`lis_id`=#{lis_id}
+	</delete>
+
+	<delete id="delectByauId" parameterType="java.lang.Integer">
+		DELETE FROM
+		LimInteStatisties where
+		LimInteStatisties.`auId`=#{auId}
+	</delete>
+
+</mapper>

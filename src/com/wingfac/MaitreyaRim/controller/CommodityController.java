@@ -146,6 +146,7 @@ public class CommodityController {
 			if (selectAllBySiD.size() > 0) {
 				// 赋值返回
 				map.put("selectBysId", selectBysId);
+				map.put("selectBysIdChange", selectBysId);
 				map.put("selectBySiD", selectBySiD);
 				map.put("selectDisBySiD", selectDisBySiD);
 				map.put("selectAllBySiD", selectAllBySiD);

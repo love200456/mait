@@ -216,6 +216,45 @@ public class StoreMobileController {
 		return m;
 	}
 	
+	/**
+	 * 根据一级类别查询对应的五折商品
+	 * @param request
+	 * @param response
+	 * @param ttc_id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("getCommodityByTOC")
+	public Map<String, Object> getCommodityByTOC(HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam("toc_id") Integer toc_id) {
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		Map<String, Object> m = new LinkedHashMap<String, Object>();
+		map.put("toc_id",toc_id);
+		List<Commodity> listAll=new ArrayList<Commodity>();
+		List<Store> selectAll = storeService.selectAllStoreByTOC(toc_id);
+		for(Store store:selectAll){
+			Integer s_id=store.getS_id();
+			List<Commodity> list=commodityMapper.selectByStoreID(s_id);
+			for(Commodity c:list){
+				String discount_type=c.getDiscount_type();
+				if(discount_type!=null && discount_type.equals("1")){
+					listAll.add(c);
+				}
+			}
+		}
+		if (listAll.size() > 0) {
+			m.put("ResponseStatus", ResponseStatus.QUERYWASSUCCESS);// '0'
+			m.put("msg", ResponseStatus.QUERYWASSUCCESS_CN_MSG);// '查询成功'
+			m.put("listAll", listAll);
+		} else {
+			m.put("ResponseStatus", ResponseStatus.STORENULL);// '1'
+			m.put("msg", ResponseStatus.STORENULL_CN_MSG);// '已无内容'
+		}
+		return m;
+	}
+	
+	
 	
 	// 通过用户ID显示店铺信息
 	@ResponseBody

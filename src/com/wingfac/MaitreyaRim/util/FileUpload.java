@@ -25,7 +25,7 @@ public class FileUpload {
 							.replaceAll("-", "")
 							+ fileName.substring(fileName.lastIndexOf("."));
 					System.out.println(trueFileName);
-					trueFileName = "MaitreyaRim" + Constants.speader
+					trueFileName = "MaitreyaRimPhoto" + Constants.speader
 							+ "pictures/store" + Constants.speader
 							+ new Date().getMonth() + Constants.speader
 							+ trueFileName;
@@ -70,7 +70,7 @@ public class FileUpload {
 					String trueFileName = UUID.randomUUID().toString()
 							.replaceAll("-", "")
 							+ fileName.substring(fileName.lastIndexOf("."));
-					trueFileName = "MaitreyaRim" + Constants.speader
+					trueFileName = "MaitreyaRimPhoto" + Constants.speader
 							+ "pictures/user" + Constants.speader
 							+ new Date().getMonth() + Constants.speader
 							+ trueFileName;
@@ -115,7 +115,7 @@ public class FileUpload {
 					String trueFileName = UUID.randomUUID().toString()
 							.replaceAll("-", "")
 							+ fileName.substring(fileName.lastIndexOf("."));
-					trueFileName = "MaitreyaRim" + Constants.speader
+					trueFileName = "MaitreyaRimPhoto" + Constants.speader
 							+ "pictures/commodity" + Constants.speader
 							+ new Date().getMonth() + Constants.speader
 							+ trueFileName;
@@ -161,7 +161,7 @@ public class FileUpload {
 					String trueFileName = UUID.randomUUID().toString()
 							.replaceAll("-", "")
 							+ fileName.substring(fileName.lastIndexOf("."));
-					trueFileName = "MaitreyaRim" + Constants.speader
+					trueFileName = "MaitreyaRimPhoto" + Constants.speader
 							+ "pictures/advertisingCategory" + Constants.speader
 							+ new Date().getMonth() + Constants.speader
 							+ trueFileName;
