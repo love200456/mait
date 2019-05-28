@@ -15,7 +15,7 @@ public class FinanceStatistics implements Serializable {
 	private String o_number;
 	private Double ermanent_integral_bonus;
 	private Double time_limited_integration;
-	private Integer full_integral_purchase;
+	private Double full_integral_purchase;
 	private Integer ocl_num;
 	private Double c_unit_price;
 	private Double time_limited_sum;
@@ -30,7 +30,7 @@ public class FinanceStatistics implements Serializable {
 	public FinanceStatistics(Integer fs_id, Integer s_id, String s_name,
 			String s_mobile, String s_address, Double fs_turnover,
 			String fs_time, String o_number, Double ermanent_integral_bonus,
-			Double time_limited_integration, Integer full_integral_purchase,
+			Double time_limited_integration, Double full_integral_purchase,
 			Integer ocl_num, Double c_unit_price, Double time_limited_sum,
 			Double ermanent_integral_sum, Double price_sum,
 			Double fs_turnover_sum) {
@@ -150,11 +150,11 @@ public class FinanceStatistics implements Serializable {
 		this.time_limited_integration = time_limited_integration;
 	}
 
-	public Integer getFull_integral_purchase() {
+	public Double getFull_integral_purchase() {
 		return full_integral_purchase;
 	}
 
-	public void setFull_integral_purchase(Integer full_integral_purchase) {
+	public void setFull_integral_purchase(Double full_integral_purchase) {
 		this.full_integral_purchase = full_integral_purchase;
 	}
 

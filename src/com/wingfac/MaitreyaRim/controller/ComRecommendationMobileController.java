@@ -1,5 +1,6 @@
 package com.wingfac.MaitreyaRim.controller;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wingfac.MaitreyaRim.po.ComRecommendation;
+import com.wingfac.MaitreyaRim.po.Store;
 import com.wingfac.MaitreyaRim.service.impl.ComRecommendationService;
+import com.wingfac.MaitreyaRim.service.impl.StoreService;
 import com.wingfac.MaitreyaRim.util.ResponseStatus;
 
 @Controller
@@ -22,18 +25,28 @@ public class ComRecommendationMobileController {
 
 	@Autowired
 	private ComRecommendationService comRecommendationService;
+	
+	@Autowired
+	private StoreService storeService;
 
 	@ResponseBody
 	@RequestMapping("selectOneCR")
 	public Map<String, Object> selectOneCR(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response,Integer toc_id) {
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		List<ComRecommendation> selectOneCR = comRecommendationService
-				.selectOneCR();
+		List<ComRecommendation> selectOneCR = comRecommendationService.selectOneCR();
+		List<ComRecommendation> resultList=new ArrayList<ComRecommendation>();
+		for(ComRecommendation comRecommendation:selectOneCR){
+			Integer s_id=comRecommendation.getS_id();
+			Store store=storeService.selectBysId(s_id);
+			if(store.getToc_id()==toc_id){
+				resultList.add(comRecommendation);
+			}
+		}
 		if (selectOneCR.size() > 0) {
 			map.put("ResponseStatus", ResponseStatus.QUERYWASSUCCESS);
 			map.put("msg", ResponseStatus.QUERYWASSUCCESS_CN_MSG);
-			map.put("obj", selectOneCR);
+			map.put("obj", resultList);
 		} else {
 			map.put("ResponseStatus", ResponseStatus.STORENULL);
 			map.put("msg", ResponseStatus.STORENULL_CN_MSG);

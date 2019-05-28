@@ -8,8 +8,8 @@
 		<result property="auAvatar" column="auAvatar" jdbcType="VARCHAR" />
 		<result property="auBuyerNick" column="auBuyerNick" jdbcType="VARCHAR" />
 		<result property="auIdentity" column="auIdentity" jdbcType="VARCHAR" />
-		<result property="limit_integral" column="limit_integral" jdbcType="INTEGER" />
-		<result property="permanent_points" column="permanent_points" jdbcType="INTEGER" />
+		<result property="limit_integral" column="limit_integral" jdbcType="DOUBLE" />
+		<result property="permanent_points" column="permanent_points" jdbcType="DOUBLE" />
 		<result property="auAddress" column="auAddress" jdbcType="VARCHAR" />
 		<result property="remarks" column="remarks" jdbcType="VARCHAR" />
 		<result property="integral_remark" column="integral_remark" jdbcType="VARCHAR" />

@@ -9,13 +9,13 @@ public class OrderTimeVo implements Serializable {
 	private String o_number;
 	private String auBuyerNick;
 	private String auMobile;
-	private Integer use_limit_integral;
-	private Integer use_permanent_points;
+	private Double use_limit_integral;
+	private Double use_permanent_points;
 	private Double ermanent_integral_bonus;
 	private Double time_limited_integration;
 	private Double o_amount;
 	private Double amount_paid;
-	private Integer full_integral_purchase;
+	private Double full_integral_purchase;
 	private String payment_time;
 	private String o_state;
 	private String store_consume_state;
@@ -25,10 +25,10 @@ public class OrderTimeVo implements Serializable {
 	}
 
 	public OrderTimeVo(Integer o_id, String o_number, String auBuyerNick,
-			String auMobile, Integer use_limit_integral,
-			Integer use_permanent_points, Double ermanent_integral_bonus,
+			String auMobile, Double use_limit_integral,
+			Double use_permanent_points, Double ermanent_integral_bonus,
 			Double time_limited_integration, Double o_amount,
-			Double amount_paid, Integer full_integral_purchase,
+			Double amount_paid, Double full_integral_purchase,
 			String payment_time, String o_state, String store_consume_state) {
 		super();
 		this.o_id = o_id;
@@ -93,19 +93,19 @@ public class OrderTimeVo implements Serializable {
 		this.auMobile = auMobile;
 	}
 
-	public Integer getUse_limit_integral() {
+	public Double getUse_limit_integral() {
 		return use_limit_integral;
 	}
 
-	public void setUse_limit_integral(Integer use_limit_integral) {
+	public void setUse_limit_integral(Double use_limit_integral) {
 		this.use_limit_integral = use_limit_integral;
 	}
 
-	public Integer getUse_permanent_points() {
+	public Double getUse_permanent_points() {
 		return use_permanent_points;
 	}
 
-	public void setUse_permanent_points(Integer use_permanent_points) {
+	public void setUse_permanent_points(Double use_permanent_points) {
 		this.use_permanent_points = use_permanent_points;
 	}
 
@@ -141,11 +141,11 @@ public class OrderTimeVo implements Serializable {
 		this.amount_paid = amount_paid;
 	}
 
-	public Integer getFull_integral_purchase() {
+	public Double getFull_integral_purchase() {
 		return full_integral_purchase;
 	}
 
-	public void setFull_integral_purchase(Integer full_integral_purchase) {
+	public void setFull_integral_purchase(Double full_integral_purchase) {
 		this.full_integral_purchase = full_integral_purchase;
 	}
 

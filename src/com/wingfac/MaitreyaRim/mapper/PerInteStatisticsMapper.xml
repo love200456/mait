@@ -7,9 +7,8 @@
 		<result property="auId" column="auId" jdbcType="INTEGER" />
 		<result property="s_name" column="s_name" jdbcType="VARCHAR" />
 		<result property="c_name" column="c_name" jdbcType="VARCHAR" />
-		<result property="pis_consumption" column="pis_consumption"
-			jdbcType="INTEGER" />
-		<result property="pis_get" column="pis_get" jdbcType="INTEGER" />
+		<result property="pis_consumption" column="pis_consumption" jdbcType="DOUBLE" />
+		<result property="pis_get" column="pis_get" jdbcType="DOUBLE" />
 		<result property="pis_time" column="pis_time" jdbcType="VARCHAR" />
 		<result property="pis_category" column="pis_category" jdbcType="VARCHAR" />
 	</resultMap>

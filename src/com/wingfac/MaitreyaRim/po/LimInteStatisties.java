@@ -9,8 +9,8 @@ public class LimInteStatisties implements Serializable {
 	private Integer auId;
 	private String s_name;
 	private String c_name;
-	private Integer lis_consumption;
-	private Integer lis_get;
+	private Double lis_consumption;
+	private Double lis_get;
 	private String lis_time;
 	private String lis_category;
 	private String lis_term;
@@ -21,7 +21,7 @@ public class LimInteStatisties implements Serializable {
 	}
 
 	public LimInteStatisties(Integer lis_id, Integer auId, String s_name,
-			String c_name, Integer lis_consumption, Integer lis_get,
+			String c_name, Double lis_consumption, Double lis_get,
 			String lis_time, String lis_category, String lis_term,
 			String lis_state) {
 		super();
@@ -79,19 +79,19 @@ public class LimInteStatisties implements Serializable {
 		this.c_name = c_name;
 	}
 
-	public Integer getLis_consumption() {
+	public Double getLis_consumption() {
 		return lis_consumption;
 	}
 
-	public void setLis_consumption(Integer lis_consumption) {
+	public void setLis_consumption(Double lis_consumption) {
 		this.lis_consumption = lis_consumption;
 	}
 
-	public Integer getLis_get() {
+	public Double getLis_get() {
 		return lis_get;
 	}
 
-	public void setLis_get(Integer lis_get) {
+	public void setLis_get(Double lis_get) {
 		this.lis_get = lis_get;
 	}
 

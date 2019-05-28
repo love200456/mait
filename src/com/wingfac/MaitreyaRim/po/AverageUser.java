@@ -11,8 +11,8 @@ public class AverageUser implements Serializable {
 	private String auAvatar;
 	private String auBuyerNick;
 	private String auIdentity;
-	private Integer limit_integral;
-	private Integer permanent_points;
+	private Double limit_integral;
+	private Double permanent_points;
 	private String auAddress;
 	private String remarks;
 	private String integral_remark;
@@ -24,7 +24,7 @@ public class AverageUser implements Serializable {
 
 	public AverageUser(Integer auId, String auMobile, String auPassword,
 			String auAvatar, String auBuyerNick, String auIdentity,
-			Integer limit_integral, Integer permanent_points, String auAddress,
+			Double limit_integral, Double permanent_points, String auAddress,
 			String remarks, String integral_remark) {
 		super();
 		this.auId = auId;
@@ -98,19 +98,19 @@ public class AverageUser implements Serializable {
 		this.auIdentity = auIdentity;
 	}
 
-	public Integer getLimit_integral() {
+	public Double getLimit_integral() {
 		return limit_integral;
 	}
 
-	public void setLimit_integral(Integer limit_integral) {
+	public void setLimit_integral(Double limit_integral) {
 		this.limit_integral = limit_integral;
 	}
 
-	public Integer getPermanent_points() {
+	public Double getPermanent_points() {
 		return permanent_points;
 	}
 
-	public void setPermanent_points(Integer permanent_points) {
+	public void setPermanent_points(Double permanent_points) {
 		this.permanent_points = permanent_points;
 	}
 

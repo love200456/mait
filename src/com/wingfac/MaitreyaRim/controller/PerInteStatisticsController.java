@@ -90,8 +90,8 @@ public class PerInteStatisticsController {
 				pis.setAuId(auId[i]);
 				pis.setS_name("无");
 				pis.setC_name("无");
-				pis.setPis_consumption(0);
-				pis.setPis_get(Integer.parseInt(pis_get));
+				pis.setPis_consumption(0d);
+				pis.setPis_get(Double.valueOf(pis_get));
 				pis.setPis_time(time);
 				pis.setPis_category("+");
 				insertPI += perInteStatisticsService.insertPI(pis);
@@ -100,8 +100,8 @@ public class PerInteStatisticsController {
 					lis.setAuId(auId[i]);
 					lis.setS_name("无");
 					lis.setC_name("无");
-					lis.setLis_consumption(0);
-					lis.setLis_get(Integer.parseInt(lis_get));
+					lis.setLis_consumption(0d);
+					lis.setLis_get(Double.parseDouble(lis_get));
 					lis.setLis_time(time);
 					lis.setLis_category("+");
 					//期限
@@ -111,8 +111,8 @@ public class PerInteStatisticsController {
 					if (insertLI > 0) {
 						AverageUser selectByauId = averageUserService.selectByauId(auId[i]);
 						//下面两行可能写错了
-						Integer xLimit = selectByauId.getLimit_integral() + Integer.parseInt(pis_get);
-						Integer xPermanent = selectByauId.getPermanent_points() + Integer.parseInt(lis_get);
+						Double xLimit = selectByauId.getLimit_integral() + Integer.parseInt(pis_get);
+						Double xPermanent = selectByauId.getPermanent_points() + Integer.parseInt(lis_get);
 						ma.put("limit_integral", xLimit);
 						ma.put("permanent_points", xPermanent);
 						ma.put("auId", auId[i]);
@@ -151,8 +151,8 @@ public class PerInteStatisticsController {
 	public Map<String, Object> insertPLN(HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam("checkedId") String checkedId,
-			@RequestParam("cash") Integer cash,
-			@RequestParam("expenses") Integer expenses) {
+			@RequestParam("cash") Double cash,
+			@RequestParam("expenses") Double expenses) {
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		Map<String, Object> ma = new LinkedHashMap<String, Object>();
 		String[] auIds = checkedId.split(",");
@@ -170,7 +170,7 @@ public class PerInteStatisticsController {
 				pis.setAuId(auId[i]);
 				pis.setS_name("无");
 				pis.setC_name("无");
-				pis.setPis_consumption(0);
+				pis.setPis_consumption(0d);
 				pis.setPis_get(cash);
 				pis.setPis_time(time);
 				pis.setPis_category("+");
@@ -180,7 +180,7 @@ public class PerInteStatisticsController {
 					lis.setAuId(auId[i]);
 					lis.setS_name("无");
 					lis.setC_name("无");
-					lis.setLis_consumption(0);
+					lis.setLis_consumption(0d);
 					lis.setLis_get(expenses);
 					lis.setLis_time(time);
 					lis.setLis_category("+");
@@ -190,8 +190,8 @@ public class PerInteStatisticsController {
 					insertLI += limInteStatistiesService.insertLI(lis);
 					if (insertLI > 0) {
 						AverageUser selectByauId = averageUserService.selectByauId(auId[i]);
-						Integer xPermanent = selectByauId.getPermanent_points() + cash;
-						Integer xLimit = selectByauId.getLimit_integral() + expenses;
+						Double xPermanent = selectByauId.getPermanent_points() + cash;
+						Double xLimit = selectByauId.getLimit_integral() + expenses;
 						ma.put("limit_integral", xLimit);
 						ma.put("permanent_points", xPermanent);
 						ma.put("auId", auId[i]);

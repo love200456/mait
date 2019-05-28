@@ -10,17 +10,17 @@ public class OrderInformationVo implements Serializable {
 	private String auBuyerNick;
 	private String o_time;
 	private Double o_amount;
-	private Integer use_limit_integral;
-	private Integer use_permanent_points;
-	private Integer full_integral_purchase;
+	private Double use_limit_integral;
+	private Double use_permanent_points;
+	private Double full_integral_purchase;
 
 	public OrderInformationVo() {
 		super();
 	}
 
 	public OrderInformationVo(Integer o_id, String c_name, String auBuyerNick,
-			String o_time, Double o_amount, Integer use_limit_integral,
-			Integer use_permanent_points, Integer full_integral_purchase) {
+			String o_time, Double o_amount, Double use_limit_integral,
+			Double use_permanent_points, Double full_integral_purchase) {
 		super();
 		this.o_id = o_id;
 		this.c_name = c_name;
@@ -82,27 +82,27 @@ public class OrderInformationVo implements Serializable {
 		this.o_amount = o_amount;
 	}
 
-	public Integer getUse_limit_integral() {
+	public Double getUse_limit_integral() {
 		return use_limit_integral;
 	}
 
-	public void setUse_limit_integral(Integer use_limit_integral) {
+	public void setUse_limit_integral(Double use_limit_integral) {
 		this.use_limit_integral = use_limit_integral;
 	}
 
-	public Integer getUse_permanent_points() {
+	public Double getUse_permanent_points() {
 		return use_permanent_points;
 	}
 
-	public void setUse_permanent_points(Integer use_permanent_points) {
+	public void setUse_permanent_points(Double use_permanent_points) {
 		this.use_permanent_points = use_permanent_points;
 	}
 
-	public Integer getFull_integral_purchase() {
+	public Double getFull_integral_purchase() {
 		return full_integral_purchase;
 	}
 
-	public void setFull_integral_purchase(Integer full_integral_purchase) {
+	public void setFull_integral_purchase(Double full_integral_purchase) {
 		this.full_integral_purchase = full_integral_purchase;
 	}
 

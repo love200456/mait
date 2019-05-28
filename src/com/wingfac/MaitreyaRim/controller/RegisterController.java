@@ -48,8 +48,8 @@ public class RegisterController {
 					au.setAuMobile(auMobile);
 					au.setAuPassword(auPasswordTwo);
 					au.setAuIdentity("1");
-					au.setLimit_integral(0);
-					au.setPermanent_points(0);
+					au.setLimit_integral(0d);
+					au.setPermanent_points(0d);
 					if (!"".equals(auBuyerNick)) {
 						au.setAuBuyerNick(auBuyerNick);
 					} else {

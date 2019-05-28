@@ -12,8 +12,8 @@ public class PerInteStatistics implements Serializable {
 	private Integer auId;
 	private String s_name;
 	private String c_name;
-	private Integer pis_consumption;
-	private Integer pis_get;
+	private Double pis_consumption;
+	private Double pis_get;
 	private String pis_time;
 	private String pis_category;
 
@@ -22,7 +22,7 @@ public class PerInteStatistics implements Serializable {
 	}
 
 	public PerInteStatistics(Integer pis_id, Integer auId, String s_name,
-			String c_name, Integer pis_consumption, Integer pis_get,
+			String c_name, Double pis_consumption, Double pis_get,
 			String pis_time, String pis_category) {
 		super();
 		this.pis_id = pis_id;
@@ -76,19 +76,19 @@ public class PerInteStatistics implements Serializable {
 		this.c_name = c_name;
 	}
 
-	public Integer getPis_consumption() {
+	public Double getPis_consumption() {
 		return pis_consumption;
 	}
 
-	public void setPis_consumption(Integer pis_consumption) {
+	public void setPis_consumption(Double pis_consumption) {
 		this.pis_consumption = pis_consumption;
 	}
 
-	public Integer getPis_get() {
+	public Double getPis_get() {
 		return pis_get;
 	}
 
-	public void setPis_get(Integer pis_get) {
+	public void setPis_get(Double pis_get) {
 		this.pis_get = pis_get;
 	}
 

@@ -67,8 +67,8 @@ public class OrderInformationController {
 						oiv.setAuBuyerNick(selectAllOrdInforFen.get(i).getAuBuyerNick());
 						oiv.setO_time(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("yyyyMMddHHmmss").parse(selectAllOrdInforFen.get(i).getO_time())));
 						oiv.setO_amount(selectAllOrdInforFen.get(i).getO_amount());
-						oiv.setUse_limit_integral((int)(selectAllOrdInforFen.get(i).getErmanent_integral_bonus()).intValue());
-						oiv.setUse_permanent_points((int)(selectAllOrdInforFen.get(i).getTime_limited_integration()).intValue());
+						oiv.setUse_limit_integral(selectAllOrdInforFen.get(i).getErmanent_integral_bonus());
+						oiv.setUse_permanent_points(selectAllOrdInforFen.get(i).getTime_limited_integration());
 						oiv.setFull_integral_purchase(selectAllOrdInforFen.get(i).getFull_integral_purchase());
 						oil.add(oiv);
 					}

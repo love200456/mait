@@ -84,9 +84,9 @@ public class OrderInformationMoblieController {
 	@Resource
 	private PayService payService;
 
-	@RequestMapping("payOrder")
+	@RequestMapping("payOrderOld")
 	@ResponseBody
-	public Map<String,Object> payOrder(HttpServletRequest request,String auId, String oId,String payType, String orderState, 
+	public Map<String,Object> payOrderOld(HttpServletRequest request,String auId, String oId,String payType, String orderState, 
 			String ermanent_integral_bonus, String time_limited_integration){
 		Map<String, Object> data = new HashMap<String,Object>();
 		Map<String, Object> user = payService.getUserById(auId);
@@ -180,32 +180,32 @@ public class OrderInformationMoblieController {
 	/**
 	 * 
 	 * @param request
-	 * @param o_id 订单ID
-	 * @param payType 支付类型
+	 * @param o_id
+	 * @param optionFlag
 	 * @return
 	 */
-	@RequestMapping("payOrderChange")
+
+	@RequestMapping("getPayOrderInfo")
 	@ResponseBody
-	public Map<String,Object> payOrderChange(HttpServletRequest request,Integer o_id,String payType,String optionFlag){
+	public Map<String,Object> getPayOrderInfo(HttpServletRequest request,Integer o_id,String optionFlag){
 		//optionFlag 0两者都不选1生活费支付，2现金支付，3两者都选
 		Map<String,Object> result=new HashMap<String,Object>();
-		Map<String, Object> data = new HashMap<String,Object>();
 		OrderInformation orderInformation=orderInformationService.selectByOid(o_id);
 		Double amount=orderInformation.getO_amount();
 		Integer s_id=orderInformation.getS_id();
 		Integer auId=orderInformation.getAuId();
 		AverageUser user=averageUserService.selectByauId(auId);
 		//用户的现金积分
-		Integer permanent_points=user.getPermanent_points();
+		Double permanent_points=user.getPermanent_points();
 		//用户的生活费积分
-		Integer limit_integral=user.getLimit_integral();
+		Double limit_integral=user.getLimit_integral();
 		Store store=storeService.selectBysId(s_id);
 		//商家的抵扣设置
 		Double percentage=store.getDeductible_percentage();
 		//需要用扣的积分现金
-		Integer cash=0;
+		Double cash=0d;
 		//需要扣的积分生活费
-		Integer expenses=0;
+		Double expenses=0d;
 		//实际支付金额
 		Double amount_paid=0d;
 		//计算扣的现金积分，生活费，和支付的实际金额
@@ -216,36 +216,132 @@ public class OrderInformationMoblieController {
 				result.put("msg","订单更新出错!");
 				return result;
 			}
-			expenses=(int)Math.round(Math.floor(amount*percentage));
+			expenses=amount*percentage;
 			amount_paid=amount-expenses;
 		}else if(optionFlag.equals("2")){
 			if(permanent_points<=amount){
 				cash=permanent_points;
 				amount_paid=amount-cash;
 			}else{
-				cash=(int)Math.round(Math.floor(amount));
+				cash=amount;
 				amount_paid=0d;
 			}
 		}else if(optionFlag.equals("3")){
 			if(amount*percentage<=limit_integral){
-				expenses=(int)Math.round(Math.floor(amount*percentage));
+				expenses=amount*percentage;
+			}else{
+				expenses=limit_integral;
 			}
 			if((amount-expenses)>=permanent_points){
 				cash=permanent_points;
 				amount_paid=amount-expenses-cash;
 			}else{
-				cash=(int)Math.round(Math.floor(amount-expenses));
+				cash=amount-expenses;
 				amount_paid=0d;
 			}
-		}else if(optionFlag.equals("4")){
+		}else if(optionFlag.equals("0")){
 			amount_paid=amount;
 		}
+		
+		System.out.println("生活费积分折扣为："+percentage);
+		System.out.println("可提取的现金积分为："+permanent_points);
+		System.out.println("可提取的生活费积分为："+limit_integral);
+		System.out.println("实际扣的生活费积分："+expenses);
+		System.out.println("实际扣的现金积分："+cash);
+		System.out.println("原订单的金额："+amount);
+		System.out.println("最后实际的金额："+amount_paid);
+		result.put("percentage",percentage);
+		result.put("permanent_points",permanent_points);
+		result.put("limit_integral",limit_integral);
+		result.put("expenses",expenses);
+		result.put("cash",cash);
+		result.put("amount_paid",amount_paid);
+		result.put("ResponseStatus","0");
+		result.put("msg","操作完成!");
+		return result;
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @param request
+	 * @param o_id 订单ID
+	 * @param payType 支付类型
+	 * @return
+	 */
+	@RequestMapping("payOrder")
+	@ResponseBody
+	public Map<String,Object> payOrder(HttpServletRequest request,Integer o_id,String payType,String optionFlag){
+		//optionFlag 0两者都不选1生活费支付，2现金支付，3两者都选
+		Map<String,Object> result=new HashMap<String,Object>();
+		Map<String, Object> data = new HashMap<String,Object>();
+		OrderInformation orderInformation=orderInformationService.selectByOid(o_id);
+		Double amount=orderInformation.getO_amount();
+		Integer s_id=orderInformation.getS_id();
+		Integer auId=orderInformation.getAuId();
+		AverageUser user=averageUserService.selectByauId(auId);
+		//用户的现金积分
+		Double permanent_points=user.getPermanent_points();
+		//用户的生活费积分
+		Double limit_integral=user.getLimit_integral();
+		Store store=storeService.selectBysId(s_id);
+		//商家的抵扣设置
+		Double percentage=store.getDeductible_percentage();
+		//需要用扣的积分现金
+		Double cash=0d;
+		//需要扣的积分生活费
+		Double expenses=0d;
+		//实际支付金额
+		Double amount_paid=0d;
+		//计算扣的现金积分，生活费，和支付的实际金额
+		
+		if(optionFlag.equals("1")){
+			if(amount*percentage>limit_integral){
+				result.put("ResponseStatus","1");
+				result.put("msg","订单更新出错!");
+				return result;
+			}
+			expenses=amount*percentage;
+			amount_paid=amount-expenses;
+		}else if(optionFlag.equals("2")){
+			if(permanent_points<=amount){
+				cash=permanent_points;
+				amount_paid=amount-cash;
+			}else{
+				cash=amount;
+				amount_paid=0d;
+			}
+		}else if(optionFlag.equals("3")){
+			if(amount*percentage<=limit_integral){
+				expenses=amount*percentage;
+			}else{
+				expenses=limit_integral;
+			}
+			if((amount-expenses)>=permanent_points){
+				cash=permanent_points;
+				amount_paid=amount-expenses-cash;
+			}else{
+				cash=amount-expenses;
+				amount_paid=0d;
+			}
+		}else if(optionFlag.equals("0")){
+			amount_paid=amount;
+		}
+		
+		System.out.println("生活费积分折扣为："+percentage);
+		System.out.println("可提取的现金积分为："+permanent_points);
+		System.out.println("可提取的生活费积分为："+limit_integral);
+		System.out.println("实际扣的生活费积分："+expenses);
+		System.out.println("实际扣的现金积分："+cash);
+		System.out.println("原订单的金额："+amount);
+		System.out.println("最后实际的金额："+amount_paid);
+		
 		
 		//更新订单
 		Map<String,Object> param=new HashMap<String,Object>();
 		param.put("use_limit_integral",expenses);
 		param.put("use_permanent_points",cash);
-		param.put("o_state","2");
 		param.put("amount_paid",amount_paid);
 		param.put("o_id",o_id);
 		
@@ -255,10 +351,10 @@ public class OrderInformationMoblieController {
 			result.put("msg","订单更新出错!");
 			return result;
 		}
-		//amount_paid==0 表示不需要微信支付宝支付
-		if(amount_paid==0){
+		//amount_paid<=0 表示不需要微信支付宝支付
+		if(amount_paid<=0){
+			
 			Map<String,Object> stateParam=new HashMap<String,Object>();
-			stateParam.put("o_state","77");
 			stateParam.put("pay_state","1");
 			stateParam.put("o_id",o_id);
 			stateParam.put("payment_time",Constants.getSystemTime());
@@ -274,7 +370,7 @@ public class OrderInformationMoblieController {
 				lis.setAuId(user.getAuId());
 				lis.setS_name(store.getS_name());
 				lis.setC_name("无");
-				lis.setLis_consumption(0);
+				lis.setLis_consumption(0d);
 				lis.setLis_get(expenses);
 				lis.setLis_time(Constants.getSystemTime());
 				lis.setLis_category("-");
@@ -289,15 +385,15 @@ public class OrderInformationMoblieController {
 				pis.setAuId(user.getAuId());
 				pis.setS_name(store.getS_name());
 				pis.setC_name("无");
-				pis.setPis_consumption(0);
+				pis.setPis_consumption(0d);
 				pis.setPis_get(cash);
 				pis.setPis_time(Constants.getSystemTime());
 				pis.setPis_category("-");
 				perInteStatisticsService.insertPI(pis);
 			}
 			//更新用户积分表
-			Integer xPermanent = user.getPermanent_points() - cash;
-			Integer xLimit = user.getLimit_integral() - expenses;
+			Double xPermanent = user.getPermanent_points() - cash;
+			Double xLimit = user.getLimit_integral() - expenses;
 			Map<String,Object> valueParam=new HashMap<String,Object>();
 			valueParam.put("limit_integral", xLimit);
 			valueParam.put("permanent_points", xPermanent);
@@ -487,8 +583,8 @@ public class OrderInformationMoblieController {
 	}
 	
 	public void paySuccessChange(OrderInformation orderInformation){
-		Integer expenses=orderInformation.getUse_limit_integral();
-		Integer cash=orderInformation.getUse_permanent_points();
+		Double expenses=orderInformation.getUse_limit_integral();
+		Double cash=orderInformation.getUse_permanent_points();
 		Integer auId=orderInformation.getAuId();
 		Integer s_id=orderInformation.getS_id();
 		Double amount_paid_dbl=orderInformation.getAmount_paid()*0.01;
@@ -501,7 +597,7 @@ public class OrderInformationMoblieController {
 			lis.setAuId(user.getAuId());
 			lis.setS_name(store.getS_name());
 			lis.setC_name("无");
-			lis.setLis_consumption(0);
+			lis.setLis_consumption(0d);
 			lis.setLis_get(expenses);
 			lis.setLis_time(Constants.getSystemTime());
 			lis.setLis_category("-");
@@ -516,15 +612,15 @@ public class OrderInformationMoblieController {
 			pis.setAuId(user.getAuId());
 			pis.setS_name(store.getS_name());
 			pis.setC_name("无");
-			pis.setPis_consumption(0);
+			pis.setPis_consumption(0d);
 			pis.setPis_get(cash);
 			pis.setPis_time(Constants.getSystemTime());
 			pis.setPis_category("-");
 			perInteStatisticsService.insertPI(pis);
 		}
 		//更新用户积分表
-		Integer xPermanent = user.getPermanent_points() - cash+amount_paid_int;
-		Integer xLimit = user.getLimit_integral() - expenses;
+		Double xPermanent = user.getPermanent_points() - cash+amount_paid_int;
+		Double xLimit = user.getLimit_integral() - expenses;
 		Map<String,Object> valueParam=new HashMap<String,Object>();
 		valueParam.put("limit_integral", xLimit);
 		valueParam.put("permanent_points", xPermanent);
@@ -572,8 +668,8 @@ public class OrderInformationMoblieController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("insertOI")
-	public Map<String, Object> insertOI(HttpServletRequest request,
+	@RequestMapping("insertOIOld")
+	public Map<String, Object> insertOIOld(HttpServletRequest request,
 			HttpServletResponse response, @RequestParam("auId") String auId,
 			@RequestParam("s_id") String s_id,
 			@RequestParam("c_id") String c_id,
@@ -608,7 +704,7 @@ public class OrderInformationMoblieController {
 				oi.setAmount_paid(0.0);
 				oi.setErmanent_integral_bonus(0.0);
 				oi.setTime_limited_integration(0.0);
-				oi.setFull_integral_purchase((int)(amount / st.getIntegral_setting()));
+				oi.setFull_integral_purchase(amount / st.getIntegral_setting());
 				Integer insertOrdeInfor = orderInformationService.insertOrdeInfor(oi);
 				if (insertOrdeInfor > 0) {
 					OrderInformation selectByauId = orderInformationService.selectByauId(Integer.parseInt(auId));
@@ -697,6 +793,107 @@ public class OrderInformationMoblieController {
 		}
 		return map;
 	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping("insertOI")
+	public Map<String, Object> insertOI(HttpServletRequest request,
+			HttpServletResponse response, @RequestParam("auId") String auId,
+			@RequestParam("s_id") String s_id,
+			@RequestParam("c_id") String c_id,
+			@RequestParam("ocl_num") String ocl_num) throws Exception {
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		OrderInformation oi = new OrderInformation();// 订单类
+		OrderCommodityList oc = new OrderCommodityList();// 订单商品类
+		AverageUser au = averageUserService.selectByauId(Integer.parseInt(auId));
+		if (au != null) {
+			String number = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+			String up_time = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+			Store st = storeService.selectBysId(Integer.parseInt(s_id));
+			Commodity co = commodityService.selectByCid(Integer.parseInt(c_id));
+			if (st != null && co != null) {
+				oi.setO_number(number);
+				oi.setAuId(au.getAuId());
+				oi.setAuBuyerNick(au.getAuBuyerNick());
+				oi.setAuMobile(au.getAuMobile());
+				oi.setAuAddress(au.getAuAddress());
+				oi.setUse_limit_integral(0d);
+				oi.setUse_permanent_points(0d);
+				oi.setO_state("0");
+				oi.setStore_consume_state("0");
+				oi.setPay_state(0);
+				oi.setS_name(st.getS_name());
+				oi.setS_id(st.getS_id());
+				oi.setS_mobile(st.getS_mobile());
+				oi.setO_time(up_time);
+				oi.setPayment_time("0");
+				Double amount = co.getC_unit_price() * Integer.parseInt(ocl_num);
+				oi.setO_amount(amount);
+				oi.setAmount_paid(0.0);
+				oi.setErmanent_integral_bonus(0.0);
+				oi.setTime_limited_integration(0.0);
+				oi.setFull_integral_purchase(0d);
+				Integer insertOrdeInfor = orderInformationService.insertOrdeInfor(oi);
+				if (insertOrdeInfor > 0) {
+					OrderInformation selectByauId = orderInformationService.selectByauId(Integer.parseInt(auId));
+					if (selectByauId != null) {
+						oc.setO_id(selectByauId.getO_id());
+						oc.setC_name(co.getC_name());
+						oc.setOcl_num(Integer.parseInt(ocl_num));
+						oc.setC_unit_price(co.getC_unit_price());
+						oc.setC_introduce(co.getC_introduce());
+						oc.setC_first_figure(co.getC_first_figure());
+						Integer insertOC = orderCommodityListService.insertOC(oc);
+						if (insertOC > 0) {
+							List<OrderCommodityList> selectByOid = orderCommodityListService.selectByOid(selectByauId.getO_id());
+							if (selectByOid.size() > 0) {
+								OrderDetailsMobileVo odm = new OrderDetailsMobileVo();
+								odm.setO_id(selectByauId.getO_id());
+								odm.setO_number(selectByauId.getO_number());
+								odm.setS_name(selectByauId.getS_name());
+								odm.setC_name(selectByOid.get(0).getC_name());
+								odm.setOcl_num(selectByOid.get(0).getOcl_num());
+								odm.setC_unit_price(selectByOid.get(0).getC_unit_price());
+								odm.setC_first_figure(selectByOid.get(0).getC_first_figure());
+								odm.setO_time(up_time);
+								odm.setAuAddress(au.getAuAddress());
+								map.put("obj", odm);
+								map.put("obj1", st.getDeductible_percentage());
+								//记录可用的生活费与可用的积分
+								map.put("limit_integral", au.getLimit_integral());
+								map.put("permanent_points",au.getPermanent_points());
+								map.put("ResponseStatus", ResponseStatus.QUERYWASSUCCESS);
+								map.put("msg", "订单生成成功!!");
+							} else {
+								map.put("ResponseStatus", ResponseStatus.STORENULL);
+								map.put("msg", "订单生成失败.....");
+							}
+						} else {
+							map.put("ResponseStatus", ResponseStatus.STORENULL);
+							map.put("msg", "订单中商品存在异常");
+						}
+					} else {
+						map.put("ResponseStatus", ResponseStatus.STORENULL);
+						map.put("msg", "查无此订单信息");
+					}
+				} else {
+					map.put("ResponseStatus", ResponseStatus.STORENULL);
+					map.put("msg", "订单异常");
+				}
+			} else {
+				map.put("ResponseStatus", ResponseStatus.STORENULL);
+				map.put("msg", "该店铺中商品存在异常");
+			}
+		} else {
+			map.put("ResponseStatus", ResponseStatus.STORENULL);
+			map.put("msg", "该用户存在异常");
+		}
+		return map;
+	}
+	
+	
+	
 
 	@ResponseBody
 	@RequestMapping("updateOstate")
@@ -975,7 +1172,7 @@ public class OrderInformationMoblieController {
 			oi.setAmount_paid(0.0);
 			oi.setErmanent_integral_bonus(0.0);
 			oi.setTime_limited_integration(0.0);
-			oi.setFull_integral_purchase((int) (Double.parseDouble(priceTotal) / bysId.getIntegral_setting()));
+			oi.setFull_integral_purchase(Double.parseDouble(priceTotal) / bysId.getIntegral_setting());
 			Integer insertOrdeInfor = orderInformationService.insertOrdeInfor(oi);
 			if(insertOrdeInfor>0){
 				OrderInformation selectByauId = orderInformationService.selectByauId(Integer.parseInt(auId));

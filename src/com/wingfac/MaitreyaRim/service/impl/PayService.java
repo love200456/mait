@@ -145,8 +145,7 @@ public class PayService {
 				f.setO_number(orderInformation.getO_number());
 				f.setErmanent_integral_bonus(0.0);
 				f.setTime_limited_integration(0.0);
-				f.setFull_integral_purchase(
-						orderInformation.getFull_integral_purchase());
+				f.setFull_integral_purchase(orderInformation.getFull_integral_purchase());
 				f.setOcl_num(selectByOids.get(0).getOcl_num());
 				f.setC_unit_price(selectByOids.get(0).getC_unit_price());
 				financeStatisticsMapper.insertFS(f);
@@ -175,14 +174,13 @@ public class PayService {
 			p.setC_name(byOid.get(0).getC_name());
 			p.setPis_category("-");
 			p.setPis_consumption(orderInformation.getFull_integral_purchase());
-			p.setPis_get(0);
+			p.setPis_get(0d);
 			p.setPis_time(
 					new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 			perInteStatisticsMapper.insertPI(p);
 			AverageUser selectByauId = averageUserMapper
 					.selectByauId(selectByOid.getAuId());
-			Integer surplus = selectByauId.getLimit_integral()
-					- orderInformation.getFull_integral_purchase();
+			Double surplus = selectByauId.getLimit_integral() - orderInformation.getFull_integral_purchase();
 			Map<String, Object> umap = new LinkedHashMap<String, Object>();
 			umap.put("auId", selectByauId.getAuId());
 			umap.put("limit_integral", surplus);
@@ -246,13 +244,12 @@ public class PayService {
 			f.setC_unit_price(selectByOids.get(0).getC_unit_price());
 			financeStatisticsMapper.insertFS(f);
 		}
-		Integer integration = (int) (selectByOid.getAmount_paid()
-				* s.getIntegral_setting());
-		Integer consumer_points = 0;
+		Double integration = selectByOid.getAmount_paid() * s.getIntegral_setting();
+		Double consumer_points = 0d;
 		String lim_type = "";
 		if ((selectByOid.getUse_limit_integral() == 0)
 				&& (selectByOid.getUse_permanent_points() == 0)) {
-			consumer_points = 0;
+			consumer_points = 0d;
 			lim_type = "+";
 		} else if ((selectByOid.getUse_limit_integral() != 0)
 				&& (selectByOid.getUse_permanent_points() == 0)) {
@@ -266,7 +263,7 @@ public class PayService {
 			l.setS_name(s.getS_name());
 			l.setC_name(selectByOids.get(0).getC_name());
 			l.setLis_consumption(consumer_points);
-			l.setLis_get(0);
+			l.setLis_get(0d);
 			l.setLis_time(
 					new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 			l.setLis_category("-");
@@ -281,7 +278,7 @@ public class PayService {
 			l.setS_name(s.getS_name());
 			l.setC_name(selectByOids.get(0).getC_name());
 			l.setLis_consumption(consumer_points);
-			l.setLis_get(0);
+			l.setLis_get(0d);
 			l.setLis_time(
 					new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 			l.setLis_category("-");
@@ -395,13 +392,12 @@ public class PayService {
 			f.setC_unit_price(selectByOids.get(0).getC_unit_price());
 			financeStatisticsMapper.insertFS(f);
 		}
-		Integer integration = (int) (selectByOid.getAmount_paid()
-				* s.getIntegral_setting());
-		Integer consumer_points = 0;
+		Double integration = selectByOid.getAmount_paid() * s.getIntegral_setting();
+		Double consumer_points = 0d;
 		String lim_type = "";
 		if ((selectByOid.getUse_limit_integral() == 0)
 				&& (selectByOid.getUse_permanent_points() == 0)) {
-			consumer_points = 0;
+			consumer_points = 0d;
 			lim_type = "+";
 		} else if ((selectByOid.getUse_limit_integral() != 0)
 				&& (selectByOid.getUse_permanent_points() == 0)) {
@@ -415,9 +411,8 @@ public class PayService {
 			l.setS_name(s.getS_name());
 			l.setC_name(selectByOids.get(0).getC_name());
 			l.setLis_consumption(consumer_points);
-			l.setLis_get(0);
-			l.setLis_time(
-					new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+			l.setLis_get(0d);
+			l.setLis_time(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 			l.setLis_category("-");
 			l.setLis_term(" ");
 			l.setLis_state("2");
@@ -430,9 +425,8 @@ public class PayService {
 			l.setS_name(s.getS_name());
 			l.setC_name(selectByOids.get(0).getC_name());
 			l.setLis_consumption(consumer_points);
-			l.setLis_get(0);
-			l.setLis_time(
-					new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+			l.setLis_get(0d);
+			l.setLis_time(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 			l.setLis_category("-");
 			l.setLis_term(" ");
 			l.setLis_state("2");

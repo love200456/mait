@@ -6,8 +6,7 @@
 		<id column="sc_id" property="sc_id" jdbcType="INTEGER" />
 		<result property="auId" column="auId" jdbcType="INTEGER" />
 		<result property="c_id" column="c_id" jdbcType="INTEGER" />
-		<result property="c_first_figure" column="c_first_figure"
-			jdbcType="VARCHAR" />
+		<result property="c_first_figure" column="c_first_figure" jdbcType="VARCHAR" />
 		<result property="c_unit_price" column="c_unit_price" jdbcType="DOUBLE" />
 		<result property="c_name" column="c_name" jdbcType="VARCHAR" />
 		<result property="c_introduce" column="c_introduce" jdbcType="VARCHAR" />

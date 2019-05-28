@@ -13,8 +13,8 @@ public class OrderDetailsMobileVo implements Serializable {
 	private Double c_unit_price;
 	private String c_first_figure;
 	private String o_time;
-	private Integer use_limit_integral;
-	private Integer use_permanent_points;
+	private Double use_limit_integral;
+	private Double use_permanent_points;
 	private Double ermanent_integral_bonus;
 	private Double time_limited_integration;
 	private Integer commodity_integral;
@@ -27,8 +27,8 @@ public class OrderDetailsMobileVo implements Serializable {
 
 	public OrderDetailsMobileVo(Integer o_id, String o_number, String s_name,
 			String c_name, Integer ocl_num, Double c_unit_price,
-			String c_first_figure, String o_time, Integer use_limit_integral,
-			Integer use_permanent_points, Double ermanent_integral_bonus,
+			String c_first_figure, String o_time, Double use_limit_integral,
+			Double use_permanent_points, Double ermanent_integral_bonus,
 			Double time_limited_integration, Integer commodity_integral,
 			Integer integral_available, String auAddress) {
 		super();
@@ -128,19 +128,19 @@ public class OrderDetailsMobileVo implements Serializable {
 		this.o_time = o_time;
 	}
 
-	public Integer getUse_limit_integral() {
+	public Double getUse_limit_integral() {
 		return use_limit_integral;
 	}
 
-	public void setUse_limit_integral(Integer use_limit_integral) {
+	public void setUse_limit_integral(Double use_limit_integral) {
 		this.use_limit_integral = use_limit_integral;
 	}
 
-	public Integer getUse_permanent_points() {
+	public Double getUse_permanent_points() {
 		return use_permanent_points;
 	}
 
-	public void setUse_permanent_points(Integer use_permanent_points) {
+	public void setUse_permanent_points(Double use_permanent_points) {
 		this.use_permanent_points = use_permanent_points;
 	}
 

@@ -15,8 +15,8 @@
 		<result property="payment_time" column="payment_time" jdbcType="VARCHAR" />
 		<result property="o_amount" column="o_amount" jdbcType="DOUBLE" />
 		<result property="amount_paid" column="amount_paid" jdbcType="DOUBLE" />
-		<result property="use_limit_integral" column="use_limit_integral" jdbcType="INTEGER" />
-		<result property="use_permanent_points" column="use_permanent_points" jdbcType="INTEGER" />
+		<result property="use_limit_integral" column="use_limit_integral" jdbcType="DOUBLE" />
+		<result property="use_permanent_points" column="use_permanent_points" jdbcType="DOUBLE" />
 		<result property="ermanent_integral_bonus" column="ermanent_integral_bonus" jdbcType="DOUBLE" />
 		<result property="time_limited_integration" column="time_limited_integration" jdbcType="DOUBLE" />
 		<result property="full_integral_purchase" column="full_integral_purchase" jdbcType="DOUBLE" />

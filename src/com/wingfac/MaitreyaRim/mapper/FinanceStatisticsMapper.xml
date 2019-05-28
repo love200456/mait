@@ -11,21 +11,15 @@
 		<result property="fs_turnover" column="fs_turnover" jdbcType="DOUBLE" />
 		<result property="fs_time" column="fs_time" jdbcType="VARCHAR" />
 		<result property="o_number" column="o_number" jdbcType="VARCHAR" />
-		<result property="ermanent_integral_bonus" column="ermanent_integral_bonus"
-			jdbcType="DOUBLE" />
-		<result property="time_limited_integration" column="time_limited_integration"
-			jdbcType="DOUBLE" />
-		<result property="full_integral_purchase" column="full_integral_purchase"
-			jdbcType="INTEGER" />
+		<result property="ermanent_integral_bonus" column="ermanent_integral_bonus"	jdbcType="DOUBLE" />
+		<result property="time_limited_integration" column="time_limited_integration" jdbcType="DOUBLE" />
+		<result property="full_integral_purchase" column="full_integral_purchase" jdbcType="DOUBLE" />
 		<result property="ocl_num" column="ocl_num" jdbcType="INTEGER" />
 		<result property="c_unit_price" column="c_unit_price" jdbcType="DOUBLE" />
-		<result property="time_limited_sum" column="time_limited_sum"
-			jdbcType="DOUBLE" />
-		<result property="ermanent_integral_sum" column="ermanent_integral_sum"
-			jdbcType="DOUBLE" />
+		<result property="time_limited_sum" column="time_limited_sum" jdbcType="DOUBLE" />
+		<result property="ermanent_integral_sum" column="ermanent_integral_sum" jdbcType="DOUBLE" />
 		<result property="price_sum" column="price_sum" jdbcType="DOUBLE" />
-		<result property="fs_turnover_sum" column="fs_turnover_sum"
-			jdbcType="DOUBLE" />
+		<result property="fs_turnover_sum" column="fs_turnover_sum" jdbcType="DOUBLE" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
