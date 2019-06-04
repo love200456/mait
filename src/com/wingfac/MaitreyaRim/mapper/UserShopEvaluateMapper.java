@@ -11,6 +11,8 @@ public interface UserShopEvaluateMapper {
 
 	public List<UserShopEvaluate> viewScoreInformation(Integer s_id);
 	
+	public List<UserShopEvaluate> viewScoreInformationPage(Map<String,Object> param);
+	
 	public Integer updateShopEvaluate(Map<String,Object> param);
 
 	public UserShopEvaluate selectByID(Long use_id);

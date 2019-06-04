@@ -78,5 +78,20 @@ public class LimInteStatistiesController {
 		}
 		return map;
 	}
+	
+	@ResponseBody
+	@RequestMapping("selectByLIChange")
+	public Map<String, Object> selectByLIChange(HttpServletRequest request,
+			HttpServletResponse response, @RequestParam("auId") String auId)
+			throws Exception {
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		List<LimInteStatisties> selectByauId = limInteStatistiesService.selectByauId(Integer.parseInt(auId));
+		AverageUser byauId = averageUserService.selectByauId(Integer.parseInt(auId));
+		map.put("limit_integral", byauId.getLimit_integral());
+		map.put("selectByauId", selectByauId);
+		map.put("msg", "0");
+		map.put("exist", "0");
+		return map;
+	}
 
 }

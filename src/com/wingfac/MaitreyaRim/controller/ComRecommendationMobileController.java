@@ -39,7 +39,7 @@ public class ComRecommendationMobileController {
 		for(ComRecommendation comRecommendation:selectOneCR){
 			Integer s_id=comRecommendation.getS_id();
 			Store store=storeService.selectBysId(s_id);
-			if(store.getToc_id()==toc_id){
+			if(store!=null && store.getToc_id()==toc_id){
 				resultList.add(comRecommendation);
 			}
 		}

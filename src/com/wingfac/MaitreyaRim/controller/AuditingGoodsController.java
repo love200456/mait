@@ -52,8 +52,7 @@ public class AuditingGoodsController {
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		Store byauId = storeService.selectByauId(Integer.parseInt(auId));
 		if (byauId != null) {
-			if (!"".equals(unit_price) && !"".equals(ag_name)
-					&& !"".equals(ag_introduce)) {
+			if (!"".equals(unit_price) && !"".equals(ag_name)&& !"".equals(ag_introduce)) {
 				guditingGoods.setS_id(byauId.getS_id());
 				guditingGoods.setS_name(byauId.getS_name());
 				guditingGoods.setS_mobile(byauId.getS_mobile());
@@ -79,57 +78,27 @@ public class AuditingGoodsController {
 					guditingGoods.setFirst_figure(" ");
 				}
 				if (files != null && files.length > 0) {
-					String[] sun = { "one", "two", "three", "four", "five",
-							"six", "seven", "eight" };
-					if (files.length < sun.length) {
-						int i = 0;
-						for (MultipartFile file : files) {
-							String path = FileUpload.commodityPictureUpload(
-									file, s.substring(0, s.length() - 12));
-							Class<? extends AuditingGoods> clazz = guditingGoods
-									.getClass();
-							Method m = clazz.getMethod("setPicture_" + sun[i],
-									String.class);
-							m.invoke(guditingGoods, path);
-							i++;
-						}
-						for (int j = files.length; j < sun.length; j++) {
-							Class<? extends AuditingGoods> clazz = guditingGoods
-									.getClass();
-							Method m = clazz.getMethod("setPicture_" + sun[i],
-									String.class);
-							m.invoke(guditingGoods, " ");
-							i++;
-						}
-					} else {
-						int i = 0;
-						for (MultipartFile file : files) {// 添加8张商品图
-							String path = FileUpload.commodityPictureUpload(
-									file, s.substring(0, s.length() - 12));
-							Class<? extends AuditingGoods> clazz = guditingGoods
-									.getClass();
-							Method m = clazz.getMethod("setPicture_" + sun[i],
-									String.class);
-							m.invoke(guditingGoods, path);
-							i++;
+					String[] sun = { "one", "two", "three", "four", "five","six", "seven", "eight" };
+					int i = 0;
+					for (MultipartFile file : files) {
+						String path = FileUpload.commodityPictureUpload(file, s.substring(0, s.length() - 12));
+						Class<? extends AuditingGoods> clazz = guditingGoods.getClass();
+						Method m = clazz.getMethod("setPicture_" + sun[i],String.class);
+						m.invoke(guditingGoods, path);
+						i++;
+						if(i>=sun.length){
+							break;
 						}
 					}
-					Integer insertAg = auditingGoodsService
-							.insertAg(guditingGoods);
-					if (insertAg > 0) {
-						map.put("ResponseStatus",
-								ResponseStatus.AUDITINGGOODSSUCCESS);
-						map.put("msg",
-								ResponseStatus.AUDITINGGOODSSUCCESS_CN_MSG);
-					} else {
-						map.put("ResponseStatus",
-								ResponseStatus.AUDITINGGOODSFAIL);
-						map.put("msg", ResponseStatus.AUDITINGGOODSFAIL_CN_MSG);
-					}
+				}
+				
+				Integer insertAg = auditingGoodsService.insertAg(guditingGoods);
+				if (insertAg > 0) {
+					map.put("ResponseStatus",ResponseStatus.AUDITINGGOODSSUCCESS);
+					map.put("msg",ResponseStatus.AUDITINGGOODSSUCCESS_CN_MSG);
 				} else {
-					map.put("ResponseStatus",
-							ResponseStatus.AUDITINGGOODSFAIL1);
-					map.put("msg", ResponseStatus.AUDITINGGOODSFAIL_CN_MSG1);
+					map.put("ResponseStatus",ResponseStatus.AUDITINGGOODSFAIL);
+					map.put("msg", ResponseStatus.AUDITINGGOODSFAIL_CN_MSG);
 				}
 			} else {
 				map.put("ResponseStatus", ResponseStatus.AUDITINGGOODSFAIL2);

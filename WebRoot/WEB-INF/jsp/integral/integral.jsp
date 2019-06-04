@@ -47,8 +47,8 @@
 					<th>全选  <input type="checkbox" onclick="allcheck(this)"/></th>
 					<th>用户名</th>
 					<th>联系方式</th>
-					<th>现金积分(永久积分)</th>
-					<th>生活费积分(限时积分)</th>
+					<th>生活费积分</th>
+					<th>现金积分</th>
 					<th>获得积分详情</th>
 					<th>备注</th>
 				</tr>
@@ -61,8 +61,8 @@
 						</td>
 						<td>${lp.auBuyerNick }</td>
 						<td>${lp.auMobile }</td>
-						<td>${lp.permanent_points }</td>
 						<td>${lp.limit_integral }</td>
+						<td>${lp.permanent_points }</td>
 						<td><input class="look" type="button" value="查看" />
 						</td>
 						<td><input type="text" class="beizhu" value="${lp.integral_remark }" onchange="gai(this)"/></td>
@@ -110,8 +110,8 @@
 		<img class="close" id="close_box2" src="../img/close.png" style="position: absolute; right: 0; left: 562px; margin: auto;top: 51px;">
 		<div class="userdetails">
 			<h3>
-				<button class="tempdiv">现金</button>
-				<button class="everdiv">生活费</button>
+				<button class="tempdiv">生活费</button>
+				<button class="everdiv">现金</button>
 			</h3>
 			<div class="inter">
 				<div class="temporary"></div>
@@ -383,7 +383,7 @@
 			$(".hiddenid").val(inid);
 			$.ajax({
 				type : "post",
-				url : '${basePath }LimInteStatisties/selectByLI.action',
+				url : '${basePath }LimInteStatisties/selectByLIChange.action',
 				data : {
 					"auId" : inid
 				},
@@ -391,11 +391,11 @@
 				success : function(rus) {
 					var pa = rus.msg;
 					if(pa != "1"){
-						var l = rus.permanent;
+						var l = rus.limit_integral;
 						var ex = rus.exist;
 						var temporary = "";
 						if(ex == "0"){
-							temporary += "<div class='tit'><div><h5><b>"+l+"</b>分</h5><p>剩余积分</p></div></div><div class='tempdetails temp2'>";
+							temporary += "<div class='tit'><div><h5><b>"+l+"</b>分</h5><p>剩余生活费</p></div></div><div class='tempdetails temp2'>";
 							var list = rus.selectByauId;
 							if(list.length>0){
 								for(var i=0 ; i<list.length ; i++){
@@ -421,7 +421,7 @@
 						$(".Bomb_box2").css("display", "block");
 						
 					}else{
-						alert("该用户暂无积分使用信息!!");
+						alert("该用户暂无生活费使用信息!!");
 					}
 				}
 			});
@@ -453,16 +453,16 @@
 				success : function(rus) {
 					var pa = rus.msg;
 					if(pa != "1"){
-						var l = rus.limit;
+						var l = rus.permanent;
 						var forever = "";
-						forever += "<div class='tit'><div><h5><b>"+l+"</b>分</h5><p>剩余缘分</p></div></div><div class='tempdetails'>"
+						forever += "<div class='tit'><div><h5><b>"+l+"</b>分</h5><p>剩余积分</p></div></div><div class='tempdetails'>"
 						var list = rus.selectByauId;
 						if(list.length>0){
 							for(var i=0 ; i<list.length ; i++){
 								if(list[i].s_name == "无"){
-									forever += "<div class='clearfix templist'><div class='floatl'><p>本日获得缘分：<span>+"+list[i].pis_get+"</span>分</p></div><div class='floatr'>"+list[i].pis_time+"</div></div>";
+									forever += "<div class='clearfix templist'><div class='floatl'><p>本日获得积分：<span>+"+list[i].pis_get+"</span>分</p></div><div class='floatr'>"+list[i].pis_time+"</div></div>";
 								}else{
-									forever += "<div class='clearfix templist'><div class='floatl'><p>本日获得缘分：<span>+"+list[i].pis_get+"</span>分</p><p>消费店铺： "+list[i].s_name+"</p><p>购买商品："+list[i].c_name+"</p><p>消费缘分：<span>-"+list[i].pis_consumption+"</span>分</p></div><div class='floatr'>"+list[i].pis_time+"</div></div>";
+									forever += "<div class='clearfix templist'><div class='floatl'><p>本日获得积分：<span>+"+list[i].pis_get+"</span>分</p><p>消费店铺： "+list[i].s_name+"</p><p>购买商品："+list[i].c_name+"</p><p>消费积分：<span>-"+list[i].pis_consumption+"</span>分</p></div><div class='floatr'>"+list[i].pis_time+"</div></div>";
 								}
 							}
 							forever += "</div><button class='cfm'>确定</button>";
@@ -475,7 +475,7 @@
 						$(".tempdiv").css("background", "#3d8cda")
 						$(".tempdiv").css("color", "#fff");
 					}else{
-						alert("该用户暂无缘分使用信息!!");
+						alert("该用户暂无现金使用信息!!");
 					}
 				}
 			});

@@ -1,5 +1,6 @@
 package com.wingfac.MaitreyaRim.controller;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wingfac.MaitreyaRim.po.ShopRecommendation;
+import com.wingfac.MaitreyaRim.po.Store;
 import com.wingfac.MaitreyaRim.service.impl.ShopRecommendationService;
+import com.wingfac.MaitreyaRim.service.impl.StoreService;
 import com.wingfac.MaitreyaRim.util.ResponseStatus;
 
 @Controller
@@ -23,17 +26,28 @@ public class ShopRecommendationMobileController {
 	@Autowired
 	private ShopRecommendationService shopRecommendationService;
 
+	@Autowired
+	private StoreService storeService;
+	
 	@ResponseBody
 	@RequestMapping("selectOneSR")
 	public Map<String, Object> selectOneSR(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response,Integer toc_id) {
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		List<ShopRecommendation> selectOne = shopRecommendationService
-				.selectOne();
+		List<ShopRecommendation> resultList=new ArrayList<ShopRecommendation>();
+		List<ShopRecommendation> selectOne = shopRecommendationService.selectOne();
+		for(ShopRecommendation ele:selectOne){
+			Integer s_id=ele.getS_id();
+			Store store=storeService.selectBysId(s_id);
+			if(store!=null && store.getToc_id()==toc_id){
+				resultList.add(ele);
+			}
+		}
+		
 		if (selectOne.size() > 0) {
 			map.put("ResponseStatus", ResponseStatus.QUERYWASSUCCESS);
 			map.put("msg", ResponseStatus.QUERYWASSUCCESS_CN_MSG);
-			map.put("obj", selectOne);
+			map.put("obj", resultList);
 		} else {
 			map.put("ResponseStatus", ResponseStatus.STORENULL);
 			map.put("msg", ResponseStatus.STORENULL_CN_MSG);

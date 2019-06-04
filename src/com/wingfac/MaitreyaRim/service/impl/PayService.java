@@ -60,6 +60,186 @@ public class PayService {
 			String oId, String orderState, String ermanent_integral_bonus,
 			String time_limited_integration, int payState,
 			int store_consume_state, boolean go) {
+		System.out.println("ermanent_integral_bonus="+ermanent_integral_bonus);
+		System.out.println("time_limited_integration="+time_limited_integration);
+		Map<String, Object> order = payMapper.getOrderById(oId);
+		Map<String, Object> store = payMapper.getStoreById(order.get("s_id") + "");
+
+		if (ermanent_integral_bonus == null
+				|| "".equals(ermanent_integral_bonus))
+			ermanent_integral_bonus = "0";
+		if (time_limited_integration == null
+				|| "".equals(time_limited_integration))
+			time_limited_integration = "0";
+
+		//WLK 20190530
+		//double offset_setting = (Double) store.get("offset_setting");
+		BigDecimal total_amount = new BigDecimal((Double) order.get("o_amount"));
+		BigDecimal e = new BigDecimal(ermanent_integral_bonus);
+		BigDecimal t = new BigDecimal(time_limited_integration);
+
+		order.put("amount_paid", total_amount.subtract(e.add(t)).doubleValue());
+		order.put("pay_state", 1);
+		order.put("ermanent_integral_bonus",(double) Double.valueOf(ermanent_integral_bonus));
+		order.put("time_limited_integration",(double) Double.valueOf(time_limited_integration));
+		order.put("store_consume_state", store_consume_state);
+		
+		payMapper.updateOrderConsumeState(oId, store_consume_state, payState,Double.valueOf(ermanent_integral_bonus),Double.valueOf(time_limited_integration),total_amount.subtract(e.add(t)).doubleValue());
+
+		OrderInformation saoma = orderInformationMapper
+				.selectByOid(Integer.parseInt(oId));
+		if (saoma.getO_state().equals("2")) {
+			if (ermanent_integral_bonus == null
+					|| "".equals(ermanent_integral_bonus)) {
+				if (time_limited_integration == null
+						|| "".equals(time_limited_integration)) {
+					orderInformationMapper.updateSaoma(saoma.getO_id());
+				}
+			}
+		}
+
+		if (go) {
+			// payMapper.updateUserIntegration((Integer) user.get("auId") + "",
+			// -(Math.floor((double) Double.valueOf(time_limited_integration) %
+			// offset_setting > 0 ? (double)
+			// Double.valueOf(time_limited_integration) / offset_setting + 1 :
+			// (double) Double.valueOf(time_limited_integration) /
+			// offset_setting)), -(Math.floor((double)
+			// Double.valueOf(ermanent_integral_bonus) % offset_setting > 0 ?
+			// (double) Double.valueOf(ermanent_integral_bonus) / offset_setting
+			// + 1 : (double) Double.valueOf(ermanent_integral_bonus) /
+			// offset_setting)));
+
+			if (orderState.equals("1")) {
+				orderInformationMapper.updateOstate(Integer.parseInt(oId));
+			}
+
+			OrderInformation selectByOidd = orderInformationMapper
+					.selectByOid(Integer.parseInt(oId));
+			
+			/**
+			 * 
+			 * wlk change 20190530			
+ 			Map<String, Object> of = new LinkedHashMap<String, Object>();
+			of.put("o_id", Long.parseLong(oId));
+			of.put("full_integral_purchase",selectByOidd.getFull_integral_purchase());
+			orderInformationMapper.modifyOrderAllPurchase(of);
+			
+			*/
+			OrderInformation orderInformation = orderInformationMapper
+					.selectByOid(Integer.parseInt(oId));
+
+			List<OrderCommodityList> selectByOids = orderCommodityListMapper
+					.selectByOids(Integer.parseInt(oId));
+			Store s = storeMapper.selectBysId(orderInformation.getS_id());
+			FinanceStatistics statistics = financeStatisticsMapper
+					.viewFinancialinformation(orderInformation.getO_number());
+			if (statistics == null) {
+				FinanceStatistics f = new FinanceStatistics();
+				f.setS_id(s.getS_id());
+				f.setS_name(s.getS_name());
+				f.setS_mobile(s.getS_mobile());
+				f.setS_address(s.getS_address());
+				f.setFs_turnover(orderInformation.getAmount_paid());
+				f.setFs_time(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+				f.setO_number(orderInformation.getO_number());
+				//change wlk
+				f.setErmanent_integral_bonus(Double.valueOf(ermanent_integral_bonus));
+				f.setTime_limited_integration(Double.valueOf(time_limited_integration));
+				f.setFull_integral_purchase(orderInformation.getFull_integral_purchase());
+				f.setOcl_num(selectByOids.get(0).getOcl_num());
+				f.setC_unit_price(selectByOids.get(0).getC_unit_price());
+				financeStatisticsMapper.insertFS(f);
+			}
+			Map<String, Object> ot = new HashMap<String, Object>();
+			ot.put("o_id", orderInformation.getO_id());
+			ot.put("payment_time",
+					new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+			orderInformationMapper.updateOrderTime(ot);
+
+			Double era = Double.parseDouble(ermanent_integral_bonus);
+			OrderInformation selectByOid = orderInformationMapper
+					.selectByOid(Integer.parseInt(oId));
+			List<OrderCommodityList> byOid = orderCommodityListMapper
+					.selectByOids(selectByOid.getO_id());
+
+			// Integer shiyong = (int) Math.floor((double)
+			// Double.valueOf(ermanent_integral_bonus) % offset_setting > 0 ?
+			// (double) Double.valueOf(ermanent_integral_bonus) / offset_setting
+			// + 1 : (double) Double.valueOf(ermanent_integral_bonus) /
+			// offset_setting);// 此为使用积分数
+			
+			if(Double.valueOf(ermanent_integral_bonus) >0d){
+				PerInteStatistics p = new PerInteStatistics();
+				p.setAuId(selectByOid.getAuId());
+				p.setS_name(selectByOid.getS_name());
+				p.setC_name(byOid.get(0).getC_name());
+				p.setPis_category("-");
+				p.setPis_consumption(orderInformation.getErmanent_integral_bonus());
+				p.setPis_get(0d);
+				p.setPis_time(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+				perInteStatisticsMapper.insertPI(p);
+			}
+
+			if(Double.valueOf(time_limited_integration) >0d){
+				LimInteStatisties lis = new LimInteStatisties();
+				lis.setAuId(selectByOid.getAuId());
+				lis.setS_name(selectByOid.getS_name());
+				lis.setC_name(byOid.get(0).getC_name());
+				lis.setLis_category("-");
+				lis.setLis_consumption(orderInformation.getErmanent_integral_bonus());
+				lis.setLis_get(0d);
+				lis.setLis_time(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+				lis.setLis_term("0");
+				lis.setLis_state("0");
+				limInteStatistiesMapper.insertLI(lis);
+			}
+			
+			AverageUser selectByauId = averageUserMapper.selectByauId(selectByOid.getAuId());
+			Double surplus = selectByauId.getLimit_integral() - orderInformation.getTime_limited_integration();
+			Double pps = selectByauId.getPermanent_points()- orderInformation.getErmanent_integral_bonus();
+			Map<String, Object> umap = new LinkedHashMap<String, Object>();
+			umap.put("auId", selectByauId.getAuId());
+			umap.put("limit_integral", surplus);
+			umap.put("permanent_points",pps);
+			averageUserMapper.updateLisPis(umap);
+			Store store2 = storeMapper.selectBysId(orderInformation.getS_id());
+			if (store2 != null) {
+				try {
+					PushUtil.doPushBus(store2.getS_mobile(), "有新订单消息,请进行查看!!");
+				} catch (UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+
+		}
+
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("tr_id", UUID.randomUUID().toString().replaceAll("-", ""));
+		param.put("total_money", 0);
+		param.put("u_id", user.get("auId") + "");
+		param.put("o_id", order.get("o_id") + "");
+		payMapper.addTransactionRecord(param);
+		return order;
+	}
+	
+	/**
+	 *  wlk
+	 * @param user
+	 * @param oId
+	 * @param orderState
+	 * @param ermanent_integral_bonus
+	 * @param time_limited_integration
+	 * @param payState
+	 * @param store_consume_state
+	 * @param go
+	 * @return
+	 */
+	public Map<String, Object> updateOrderStateByIdOld(Map<String, Object> user,
+			String oId, String orderState, String ermanent_integral_bonus,
+			String time_limited_integration, int payState,
+			int store_consume_state, boolean go) {
 		Map<String, Object> order = payMapper.getOrderById(oId);
 		Map<String, Object> store = payMapper
 				.getStoreById(order.get("s_id") + "");
@@ -71,9 +251,9 @@ public class PayService {
 				|| "".equals(time_limited_integration))
 			time_limited_integration = "0";
 
-		double offset_setting = (Double) store.get("offset_setting");
-		BigDecimal total_amount = new BigDecimal(
-				(Double) order.get("o_amount"));
+		//WLK 20190530
+		//double offset_setting = (Double) store.get("offset_setting");
+		BigDecimal total_amount = new BigDecimal((Double) order.get("o_amount"));
 		BigDecimal e = new BigDecimal(ermanent_integral_bonus);
 		BigDecimal t = new BigDecimal(time_limited_integration);
 

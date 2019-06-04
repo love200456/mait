@@ -90,10 +90,8 @@ $(function() {
 		<h5 style="color:#3d8dd9">积分设置：<a>0.1</a></h5>
 		<h5 style="color:#3d8dd9">抵扣设置：<a>1.0</a></h5>
  -->
-		<h5 style="color:#3d8dd9">抵扣比率：<a>${bysId.deductible_percentage}%</a></h5>
-		<!-- 
-			<input type="hidden" id="deductible_percentage" value="0.5"/>
-		 -->
+		<h5 style="color:#3d8dd9">抵扣比率：<a>${bysId.deductible_percentage}</a></h5>
+		<input type="hidden" id="deductible_percentage" value="${bysId.deductible_percentage}"/>
 		<input type="hidden" id="sId" value="${bysId.s_id }"/>
 		<h5><p class="floatl">分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类：</p>
 			<select class="floatl selec1" style="display:block;" name="tocId" id="tocId">

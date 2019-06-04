@@ -21,6 +21,10 @@ public class UserShopEvaluateService {
 	public List<UserShopEvaluate> viewScoreInformation(Integer s_id) {
 		return userShopEvaluateMapper.viewScoreInformation(s_id);
 	}
+	
+	public List<UserShopEvaluate> viewScoreInformationPage(Map<String,Object> param){
+		return userShopEvaluateMapper.viewScoreInformationPage(param);
+	}
 
 	public Integer updateShopEvaluate(Map<String,Object> param){
 		return userShopEvaluateMapper.updateShopEvaluate(param);

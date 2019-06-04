@@ -133,9 +133,14 @@ public class UserShopEvaluateController {
 	 */
 	@ResponseBody
 	@RequestMapping("evaluateList")
-	public Map<String, Object> evaluateList(@RequestParam(value="s_id",required=true) Integer s_id){
+	public Map<String, Object> evaluateList(@RequestParam(value="s_id",required=true) Integer s_id,
+			@RequestParam(value="pstart",defaultValue="0",required=false) Integer pstart){
 		Map<String,Object> result=new HashMap<String,Object>();
-		List<UserShopEvaluate> list = userShopEvaluateService.viewScoreInformation(s_id);
+		Map<String,Object> param=new HashMap<String,Object>();
+		param.put("s_id",s_id);
+		param.put("psize",20);
+		param.put("pstart",pstart*20);
+		List<UserShopEvaluate> list = userShopEvaluateService.viewScoreInformationPage(param);
 		for(UserShopEvaluate use:list){
 			Integer auid=use.getAuId();
 			AverageUser averageUser=averageUserService.selectByauId(auid);

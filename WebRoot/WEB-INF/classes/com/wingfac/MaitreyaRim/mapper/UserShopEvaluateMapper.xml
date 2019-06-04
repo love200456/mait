@@ -29,6 +29,11 @@
 		SELECT * FROM UserShopEvaluate WHERE UserShopEvaluate.`s_id`=#{s_id}
 	</select>
 	
+	<select id="viewScoreInformationPage" parameterType="Map" resultType="com.wingfac.MaitreyaRim.po.UserShopEvaluate">
+		SELECT * FROM UserShopEvaluate WHERE UserShopEvaluate.`s_id`=#{s_id} limit #{pstart},#{psize}
+	</select>
+	
+	
 	<select id="selectByID" parameterType="java.lang.Long" resultType="com.wingfac.MaitreyaRim.po.UserShopEvaluate">
 		SELECT * FROM UserShopEvaluate WHERE UserShopEvaluate.`use_id`=#{use_id}
 	</select>

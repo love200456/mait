@@ -218,12 +218,10 @@ public class PerInteStatisticsController {
 	public Map<String, Object> selectByauIdPIxin(HttpServletRequest request,
 			HttpServletResponse response, @RequestParam("auId") String auId) {
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		List<PerInteStatistics> selectByauId = perInteStatisticsService
-				.selectByauId(Integer.parseInt(auId));
+		List<PerInteStatistics> selectByauId = perInteStatisticsService.selectByauId(Integer.parseInt(auId));
 		if (selectByauId.size() > 0) {
-			AverageUser byauId = averageUserService.selectByauId(Integer
-					.parseInt(auId));
-			map.put("limit", byauId.getLimit_integral());
+			AverageUser byauId = averageUserService.selectByauId(Integer.parseInt(auId));
+			map.put("permanent", byauId.getPermanent_points());
 			map.put("selectByauId", selectByauId);
 			map.put("msg", "0");
 		} else {

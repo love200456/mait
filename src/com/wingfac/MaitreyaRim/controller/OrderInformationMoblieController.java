@@ -176,6 +176,98 @@ public class OrderInformationMoblieController {
 		return data;
 		
 	}
+	
+	
+	@RequestMapping("payOrder")
+	@ResponseBody
+	public Map<String,Object> payOrder(HttpServletRequest request,String auId, String oId,String payType, String orderState, String ermanent_integral_bonus, String time_limited_integration){
+		Map<String, Object> data = new HashMap<String,Object>();
+		Map<String, Object> user = payService.getUserById(auId);
+		switch(Integer.parseInt(payType)){
+		case 0:
+			int store_consume_state = 0; 
+			if("0".equals(orderState)){
+				store_consume_state = 1;
+			}
+			try{
+				Map<String, Object> order = payService.updateOrderStateById(user, oId, orderState, ermanent_integral_bonus, time_limited_integration, 1,store_consume_state, true);
+				
+				data.put("data", order);
+				data.put("ResponseStatus", "0");
+				data.put("msg",ResponseStatus.ORDERPAYSUCCESS_CN_MSG );
+			} catch(Exception e){
+				System.out.println(e.getMessage());
+				data.put("ResponseStatus", "1");
+				data.put("msg",ResponseStatus.ORDERPAYFAIL_CN_MSG );
+			}
+			
+			break;
+		case 1:
+			Map<String, Object> ALOrder = payService.updateOrderStateById(user, oId, orderState, ermanent_integral_bonus, time_limited_integration, 0,0, false);
+			AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipaydev.com/gateway.do", DirectPayConfig.ALPayAppId, DirectPayConfig.ALAppPrivateKey, "json", "UTF-8", DirectPayConfig.ALPublicKey, "RSA2");
+			AlipayTradeAppPayRequest req = new AlipayTradeAppPayRequest();
+			AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+			model.setBody("弥勒缘订单");
+			model.setSubject("订单支付");
+			model.setOutTradeNo(oId);
+			model.setTimeoutExpress("30m");
+			model.setTotalAmount(((Double)ALOrder.get("amount_paid")).toString());
+			//model.setTotalAmount("0.01");
+			model.setProductCode("QUICK_MSECURITY_PAY");
+			req.setBizModel(model);
+			req.setNotifyUrl(DirectPayConfig.ALNotifyUrl); 
+			try {
+		        AlipayTradeAppPayResponse resp = alipayClient.sdkExecute(req);
+		        data.put("ResponseStatus", ResponseStatus.ALRePayFail);
+		        data.put("msg", ResponseStatus.ALRePaySuccess_CN_MSG);
+		        Map m = new HashMap<String,Object>();
+		        m.put("alSign", resp.getBody());
+		        data.put("data", m);
+		    } catch (AlipayApiException e) {
+		        System.out.println(e.getMessage());
+		        data.put("ResponseStatus", ResponseStatus.ALRePaySuccess);
+		        data.put("msg", ResponseStatus.ALRePayFail_CN_MSG);
+		        data.put("oId", "");
+		        data.put("data", "");
+		    }
+			break;
+		case 2:
+			Map<String, Object> order = payService.updateOrderStateById(user, oId, orderState, ermanent_integral_bonus, time_limited_integration, 0,0,false);
+			HashMap<String, String> payParam = new HashMap<String, String>();
+			payParam.put("body", "弥勒缘-订单支付");
+			payParam.put("out_trade_no", oId);
+			payParam.put("total_fee", Integer.toString((int)((double)order.get("amount_paid") * 100)));
+			//payParam.put("total_fee", "2000");
+			payParam.put("spbill_create_ip", WXPayUtil.getIpAddress(request));
+			payParam.put("notify_url", Constants.WXNotifyUrl);
+			payParam.put("trade_type", "APP");
+			Map<String, String> r;
+			try {
+				WXPayConfig config = WXPayConfigImpl.getInstance();
+				WXPay wxPay = new WXPay(config);
+				r = wxPay.unifiedOrder(payParam);
+				Map<String, String> appResult = new HashMap<String,String>();
+				appResult.put("appid", Constants.WXAppid);
+				appResult.put("partnerid", Constants.WXMchid);
+				appResult.put("prepayid", r.get("prepay_id"));
+				appResult.put("package", "Sign=WXPay");
+				appResult.put("noncestr", WXPayUtil.generateNonceStr());
+				appResult.put("timestamp", System.currentTimeMillis()/1000+"");
+				String sign = WXPayUtil.generateSignature(appResult, Constants.WXApiKey);
+				appResult.put("sign", sign);
+				data.put("data", appResult);
+				data.put("ResponseStatus", ResponseStatus.WXRePayFail);
+				data.put("msg",ResponseStatus.WXRePaySuccess_CN_MSG );
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				data.put("ResponseStatus", ResponseStatus.WXRePaySuccess);
+				data.put("msg",ResponseStatus.WXRePayFail_CN_MSG );
+			}
+			break;
+		}
+		return data;
+		
+	}
 
 	/**
 	 * 
@@ -270,7 +362,7 @@ public class OrderInformationMoblieController {
 	 * @param payType 支付类型
 	 * @return
 	 */
-	@RequestMapping("payOrder")
+	/*@RequestMapping("payOrder")
 	@ResponseBody
 	public Map<String,Object> payOrder(HttpServletRequest request,Integer o_id,String payType,String optionFlag){
 		//optionFlag 0两者都不选1生活费支付，2现金支付，3两者都选
@@ -472,6 +564,8 @@ public class OrderInformationMoblieController {
 		
 	}
 	
+	
+	*/
 	
 	@RequestMapping("WXPaySuccess")
 	@ResponseBody
@@ -1081,6 +1175,7 @@ public class OrderInformationMoblieController {
 				map.put("msg", "查询成功");
 				if(evaluatelist!=null && evaluatelist.size()>0){
 					map.put("evaluateNumber",evaluatelist.size());
+					map.put("evaluatelist",evaluatelist);
 				}else{
 					map.put("evaluateNumber", "0");
 				}
