@@ -27,7 +27,7 @@
 		(#{auId},#{s_id},#{s_name},#{s_logo},#{integral_setting},#{s_longitude},#{s_latitude})
 	</insert>
 
-	<select id="selectByauId" resultType="map">
+	<select id="selectByauId" resultType="com.wingfac.MaitreyaRim.po.UserStoreFollow">
 		SELECT
 		<include refid="Base_Column_List" />
 		FROM UserStoreFollow WHERE UserStoreFollow.`auId`=#{auId} ORDER BY

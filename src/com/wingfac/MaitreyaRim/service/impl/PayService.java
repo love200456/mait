@@ -205,6 +205,18 @@ public class PayService {
 			averageUserMapper.updateLisPis(umap);
 			Store store2 = storeMapper.selectBysId(orderInformation.getS_id());
 			if (store2 != null) {
+				AverageUser storeUser = averageUserMapper.selectByauId(store2.getAuId());
+				Double money=0d;
+				//入账
+				if(storeUser!=null){
+					money=storeUser.getMoney()!=null ? storeUser.getMoney():0d;
+					Double o_amount=orderInformation.getO_amount();
+					Map<String,Object> param=new HashMap<String,Object>();
+					param.put("money",o_amount+money);
+					param.put("auId",storeUser.getAuId());
+					averageUserMapper.updateMoney(param);
+				}
+				
 				try {
 					PushUtil.doPushBus(store2.getS_mobile(), "有新订单消息,请进行查看!!");
 				} catch (UnsupportedEncodingException e1) {
@@ -212,15 +224,18 @@ public class PayService {
 					e1.printStackTrace();
 				}
 			}
+			
+			
+			
 
 		}
 
-		Map<String, Object> param = new HashMap<String, Object>();
+/*		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("tr_id", UUID.randomUUID().toString().replaceAll("-", ""));
 		param.put("total_money", 0);
 		param.put("u_id", user.get("auId") + "");
 		param.put("o_id", order.get("o_id") + "");
-		payMapper.addTransactionRecord(param);
+		payMapper.addTransactionRecord(param);*/
 		return order;
 	}
 	

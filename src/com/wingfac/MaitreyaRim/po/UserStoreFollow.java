@@ -16,6 +16,10 @@ public class UserStoreFollow implements Serializable {
 	private Double integral_setting;
 	private Double s_longitude;
 	private Double s_latitude;
+	private String working_hours;
+	
+	private String describe;
+	private Double deductible_percentage;
 
 	public UserStoreFollow() {
 		super();
@@ -108,4 +112,29 @@ public class UserStoreFollow implements Serializable {
 		this.s_latitude = s_latitude;
 	}
 
+	public String getWorking_hours() {
+		return working_hours;
+	}
+
+	public void setWorking_hours(String working_hours) {
+		this.working_hours = working_hours;
+	}
+
+	public String getDescribe() {
+		return describe;
+	}
+
+	public void setDescribe(String describe) {
+		this.describe = describe;
+	}
+
+	public Double getDeductible_percentage() {
+		return deductible_percentage;
+	}
+
+	public void setDeductible_percentage(Double deductible_percentage) {
+		this.deductible_percentage = deductible_percentage;
+	}
+
+	
 }

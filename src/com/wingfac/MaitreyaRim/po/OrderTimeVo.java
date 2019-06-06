@@ -19,6 +19,8 @@ public class OrderTimeVo implements Serializable {
 	private String payment_time;
 	private String o_state;
 	private String store_consume_state;
+	private String o_time;
+	private String auAddress;
 
 	public OrderTimeVo() {
 		super();
@@ -172,5 +174,23 @@ public class OrderTimeVo implements Serializable {
 	public void setStore_consume_state(String store_consume_state) {
 		this.store_consume_state = store_consume_state;
 	}
+
+	public String getO_time() {
+		return o_time;
+	}
+
+	public void setO_time(String o_time) {
+		this.o_time = o_time;
+	}
+
+	public String getAuAddress() {
+		return auAddress;
+	}
+
+	public void setAuAddress(String auAddress) {
+		this.auAddress = auAddress;
+	}
+
+
 
 }

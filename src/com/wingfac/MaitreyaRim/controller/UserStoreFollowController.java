@@ -92,8 +92,16 @@ public class UserStoreFollowController {
 		m.put("pstart", pstarts * psizes);
 		m.put("psize", psizes);
 		m.put("auId", Integer.parseInt(auId));
-		List<UserStoreFollow> selectByauId = userStoreFollowService
-				.selectByauId(m);
+		List<UserStoreFollow> selectByauId = userStoreFollowService.selectByauId(m);
+		for(UserStoreFollow usf:selectByauId){
+			Integer s_id=usf.getS_id();
+			Store store=storeService.selectBysId(s_id);
+			if(store!=null){
+				usf.setWorking_hours(store.getWorking_hours());
+				usf.setDescribe(store.getDescribe());
+				usf.setDeductible_percentage(store.getDeductible_percentage());
+			}
+		}
 		if (selectByauId.size() > 0) {
 			map.put("ResponseStatus", ResponseStatus.QUERYWASSUCCESS);
 			map.put("msg", ResponseStatus.QUERYWASSUCCESS_CN_MSG);

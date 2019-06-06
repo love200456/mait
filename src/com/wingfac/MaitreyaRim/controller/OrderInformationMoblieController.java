@@ -1113,7 +1113,17 @@ public class OrderInformationMoblieController {
 					ot.setO_amount(selectAllOrdeInfor.get(i).getO_amount());
 					ot.setAmount_paid(selectAllOrdeInfor.get(i).getAmount_paid());
 					ot.setFull_integral_purchase(selectAllOrdeInfor.get(i).getFull_integral_purchase());
-					ot.setPayment_time(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("yyyyMMddHHmmss").parse(selectAllOrdeInfor.get(i).getO_time())));
+					ot.setAuAddress(selectAllOrdeInfor.get(i).getAuAddress());
+					try{
+						ot.setO_time(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("yyyyMMddHHmmss").parse(selectAllOrdeInfor.get(i).getO_time())));
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+					try{
+						ot.setPayment_time(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("yyyyMMddHHmmss").parse(selectAllOrdeInfor.get(i).getPayment_time())));
+					}catch(Exception e){
+						e.printStackTrace();
+					}					
 					ot.setO_state(selectAllOrdeInfor.get(i).getO_state());
 					ot.setStore_consume_state(selectAllOrdeInfor.get(i).getStore_consume_state());
 					oiTime.add(ot);

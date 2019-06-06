@@ -26,7 +26,7 @@
 <div class="search2 clearfix">
 <div class="floatl">
   <a class="curr second_link" href="javascript:void(0)" _href="${basePath }AdvertisingCategory/selectAC.action?level=2">二级分类广告</a>
-  <a class="second_link" href="javascript:void(0)" _href="${basePath }StoreBackstage/selectAllStoreXian.action?level=2">二级推荐店铺</a>
+  <%-- <a class="second_link" href="javascript:void(0)" _href="${basePath }StoreBackstage/selectAllStoreXian.action?level=2">二级推荐店铺</a> --%>
 </div>
 </div>
  <div class="contain2">

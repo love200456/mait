@@ -78,10 +78,10 @@
 				<em>共 ${pages } 页</em>
 			</div>
 			<div class="btnlist">
-				<input class="give" type="button" id="give_permanent" value="送积分" />
+				<!-- <input class="give" type="button" id="give_permanent" value="送积分" /> -->
 				<input class="give" type="button" id="give_permanent_new" value="新送积分" />
 					<c:if test="${sessionScope.saRole == '0' }">
-						<input class="give" type="button" id="give_limit" value="送缘分积分" />
+						<!-- <input class="give" type="button" id="give_limit" value="送缘分积分" /> -->
 					</c:if>
 			</div>
 		</footer>
